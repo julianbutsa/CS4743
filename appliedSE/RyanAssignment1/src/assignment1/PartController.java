@@ -14,7 +14,9 @@ public class PartController implements ActionListener{
 			case "add":
 				addPartPanel add = view.getAddPartPanel();
 			int q = add.getQtf();
-			int a = model.addPart(add.getNametf(), add.getNumbertf(), add.getVendortf(), q);
+			PartModel m = new PartModel(add.getNametf(), add.getNumbertf(), add.getVendortf(), q);
+			m.setQunit(add.getQUnit());
+			int a = model.addPart(m);
 			if(a != 0){
 				add.setQtf("Error Detected");
 				add.setNametf("Error Detected");

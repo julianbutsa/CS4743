@@ -22,7 +22,7 @@ public class DetailPanel extends JPanel implements ActionListener{
 	private JLabel pnumber;
 	private JLabel pvendor;
 	private JLabel pquantity;
-	
+	private JLabel qunit;
 	
 	public DetailPanel(PartModel m, PartView v, InventoryPanel iv, InventoryModel im) {
 		this.model = m;
@@ -39,6 +39,7 @@ public class DetailPanel extends JPanel implements ActionListener{
 		pname = new JLabel(model.getPname());
 		pnumber = new JLabel(model.getPnum());
 		pvendor = new JLabel(model.getVendor());
+		qunit = new JLabel(model.getQunit());
 		pquantity = new JLabel(String.valueOf(model.getQuantity()));
 		ibutton = new JButton("Inventory");
 		ibutton.addActionListener(this);
@@ -54,9 +55,11 @@ public class DetailPanel extends JPanel implements ActionListener{
 		this.add(vendor);
 		this.add(pvendor);
 		this.add(quantity);
+		this.add(qunit);
 		this.add(pquantity);
 		this.add(ibutton);
 		this.add(ebutton);
+
 
 	}
 	
