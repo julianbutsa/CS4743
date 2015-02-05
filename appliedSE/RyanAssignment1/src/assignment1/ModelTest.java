@@ -22,8 +22,8 @@ public class ModelTest {
 			InventoryModel m = new InventoryModel();
 			PartModel model = new PartModel("Name", "1", "Vendor", 5);
 			m.addPart(model);
-			model.editModel("Eman", "2", "Distributor", 6, m);
-			model.editModel("Ewoman", "3", "B", -1, m);
+			model.editModel("Eman", "2", "Distributor", 6, m, "Linear Feet", "Facility 2");
+			model.editModel("Ewoman", "3", "B", -1, m, "Pieces", "Facility 2");
 			assertTrue(model.getPname() == "Eman" && model.getPnum() == "2" && model.getVendor() == "Distributor" && model.getQuantity() == 6);
 		}
 		

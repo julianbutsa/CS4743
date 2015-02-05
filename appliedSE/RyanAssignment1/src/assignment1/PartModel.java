@@ -10,17 +10,19 @@ public class PartModel {
 	String partname;
 	String vendor;
 	int quantity;
-	String qunit;
-		
 	int id;
-	
+	String qunit;
+	String location;
+
 	public PartModel(String name, String number, String v, int q) {
 		partno = number;
 		partname = name;
 		if(v != null)
 			vendor = v;
 		quantity = q;
+		id = 0;
 		this.qunit = "Unkown";
+		this.location = "Unknown";
 		id = 0;
 	}
 	
@@ -48,7 +50,7 @@ public class PartModel {
     	return quantity;
     }
     
-    public int editModel(String name, String number, String v, int q, InventoryModel model, String unit){
+    public int editModel(String name, String number, String v, int q, InventoryModel model, String unit, String location){
     	if(number.length() > 20 || name.length() > 255 || v.length() > 20){
 			System.out.println("Invalid String Input Size");
 			return -1;
@@ -66,7 +68,11 @@ public class PartModel {
 			return -1;
 		}
 		if(unit.equals("Unknown")){
-			System.out.println("don't pick unkown");
+			System.out.println("Unit Type cannot be unknown");
+			return -1;
+		}
+		if(location.equals("Unknown")){
+			System.out.println("Location cannot be unknown");
 			return -1;
 		}
     	partno = number;
@@ -74,6 +80,7 @@ public class PartModel {
     	vendor = v;
     	quantity = q;
     	qunit = unit;
+    	this.location  = location;
     	return 0;
     }
     
@@ -108,6 +115,16 @@ public class PartModel {
 	public void setQunit(String qunit) {
 		this.qunit = qunit;
 	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	
+	
     
     
 	

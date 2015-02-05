@@ -18,12 +18,13 @@ public class addPartPanel extends JPanel{
 	private JLabel vendor;
 	private JLabel quantity;
 	private JLabel qunitLabel;
+	private JLabel locationLabel;
 	private JTextField nametf;
 	private JTextField numbertf;
 	private JTextField vendortf;
 	private JTextField qtf;
-	private JComboBox qunit;
-
+	private JComboBox<String> qunit;
+	private JComboBox<String> location;
 	
 	public addPartPanel(InventoryModel m, PartView v) {
 		this.model = m;
@@ -38,13 +39,16 @@ public class addPartPanel extends JPanel{
 		vendor = new JLabel("Vendor:");
 		quantity = new JLabel("Quantity:");
 		qunitLabel = new JLabel("Units");
+		locationLabel = new JLabel("Location");
 		nametf = new JTextField("", 255);
 		numbertf = new JTextField("", 20);
 		vendortf = new JTextField("",255);
 		qtf = new JTextField("", 20);
 		String[] units = {"Unknown", "Linear Feet", "Pieces"};
-		qunit = new JComboBox(units);
-		
+		qunit = new JComboBox<String>(units);
+		String[] local = { "Facility 1 Warehouse 1", "Facility 1 Warehouse 2", "Facility 2",
+				"Unknown"} ;
+		location = new JComboBox<String>(local);
 		this.add(name);
 		this.add(nametf);
 		this.add(number);
@@ -55,6 +59,8 @@ public class addPartPanel extends JPanel{
 		this.add(qtf);
 		this.add(qunitLabel);
 		this.add(qunit);
+		this.add(locationLabel);
+		this.add(location);
 		this.add(addbutton);
 
 		
@@ -93,6 +99,10 @@ public class addPartPanel extends JPanel{
 	
 	public String getQUnit(){
 		return this.qunit.getSelectedItem().toString();
+	}
+	
+	public String getLocal(){
+		return this.location.getSelectedItem().toString();
 	}
 	public void registerListener(PartController controller){
 		addbutton.addActionListener(controller);
