@@ -10,6 +10,7 @@ public class PartModel {
 	String partname;
 	String vendor;
 	int quantity;
+	int id;
 	
 	public PartModel(String name, String number, String v, int q) {
 		partno = number;
@@ -17,6 +18,7 @@ public class PartModel {
 		if(v != null)
 			vendor = v;
 		quantity = q;
+		id = 0;
 	}
 	
     public String getPnum(){
@@ -77,6 +79,14 @@ public class PartModel {
     
     public void setVendor(String s){
     	vendor = s;
+    }
+    
+    public void setId(int i){
+    	id = i;
+    }
+    
+    public int getId(){
+    	return id;
     }
     
     public void setQuantity(int s){

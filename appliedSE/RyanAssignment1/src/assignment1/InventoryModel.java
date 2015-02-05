@@ -8,6 +8,7 @@ public class InventoryModel {
 	int parts;
 	private ArrayList<PartModel> Inventory = new ArrayList<PartModel>();
 	private PartModel a, b, c;
+	int currentid = 1;
 	
 	public InventoryModel() {
 		parts = 0;
@@ -15,8 +16,11 @@ public class InventoryModel {
 		b = new PartModel("Part B", "17", null, 3);
 		c = new PartModel("Part C", "35", "Vendor Industries", 5);
 		Inventory.add(a);
+		a.setId(currentid++);
 		Inventory.add(b);
+		b.setId(currentid++);
 		Inventory.add(c);
+		c.setId(currentid++);
 	}
 	
 	public ArrayList<PartModel> getInventory(){
@@ -48,6 +52,7 @@ public class InventoryModel {
 			System.out.println("Name Taken");
 			return -1;
 		}
+		m.setId(currentid++);
     	Inventory.add(m);
     	return 0;
     }
@@ -81,6 +86,7 @@ public class InventoryModel {
 			return -1;
 		}
     	PartModel d = new PartModel(name, number, v, q);
+    	d.setId(currentid++);
     	Inventory.add(d);
     	return 0;
     }
