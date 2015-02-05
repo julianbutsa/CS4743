@@ -19,12 +19,14 @@ public class addPartPanel extends JPanel{
 	private JLabel quantity;
 	private JLabel qunitLabel;
 	private JLabel locationLabel;
+	private JLabel external;
 	private JTextField nametf;
 	private JTextField numbertf;
 	private JTextField vendortf;
 	private JTextField qtf;
 	private JComboBox<String> qunit;
 	private JComboBox<String> location;
+	private JTextField etf;
 	
 	public addPartPanel(InventoryModel m, PartView v) {
 		this.model = m;
@@ -40,10 +42,12 @@ public class addPartPanel extends JPanel{
 		quantity = new JLabel("Quantity:");
 		qunitLabel = new JLabel("Units");
 		locationLabel = new JLabel("Location");
+		external = new JLabel("External Part #:");
 		nametf = new JTextField("", 255);
 		numbertf = new JTextField("", 20);
 		vendortf = new JTextField("",255);
 		qtf = new JTextField("", 20);
+		etf = new JTextField("", 50);
 		String[] units = {"Unknown", "Linear Feet", "Pieces"};
 		qunit = new JComboBox<String>(units);
 		String[] local = { "Facility 1 Warehouse 1", "Facility 1 Warehouse 2", "Facility 2",
@@ -57,6 +61,8 @@ public class addPartPanel extends JPanel{
 		this.add(vendortf);
 		this.add(quantity);
 		this.add(qtf);
+		this.add(external);
+		this.add(etf);
 		this.add(qunitLabel);
 		this.add(qunit);
 		this.add(locationLabel);
@@ -83,6 +89,14 @@ public class addPartPanel extends JPanel{
 	
 	public void setNametf(String s){
 		nametf.setText(s);
+	}
+	
+	public void setEtf(String s){
+		etf.setText(s);
+	}
+	
+	public String getEtf(){
+		return etf.getText();
 	}
 	
 	public void setNumbertf(String s){

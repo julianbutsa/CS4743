@@ -12,9 +12,9 @@ public class InventoryModel {
 	
 	public InventoryModel() {
 		parts = 0;
-		a = new PartModel("Part A", "24", "Maker Industries", 4);
-		b = new PartModel("Part B", "17", null, 3);
-		c = new PartModel("Part C", "35", "Vendor Industries", 5);
+		a = new PartModel("Part A", "24", "Maker Industries", null, 4);
+		b = new PartModel("Part B", "17", null,null, 3);
+		c = new PartModel("Part C", "35", "Vendor Industries",null, 5);
 		Inventory.add(a);
 		a.setId(currentid++);
 		Inventory.add(b);
@@ -68,8 +68,8 @@ public class InventoryModel {
     	return 0;
     }
     
-    public int addPart(String name, String number, String v, int q){
-    	if(number.length() > 20 || name.length() > 255 || v.length() > 20){
+    public int addPart(String name, String number, String v, String e,  int q){
+    	if(number.length() > 20 || name.length() > 255 || v.length() > 20 || e.length() > 50){
 			System.out.println("Invalid String Input Size");
 			return -1;
 		}
@@ -85,7 +85,7 @@ public class InventoryModel {
 			System.out.println("Name Taken");
 			return -1;
 		}
-    	PartModel d = new PartModel(name, number, v, q);
+    	PartModel d = new PartModel(name, number, v, e, q);
     	d.setId(currentid++);
     	Inventory.add(d);
     	return 0;
