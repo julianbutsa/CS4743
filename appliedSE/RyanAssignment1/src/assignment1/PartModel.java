@@ -12,6 +12,8 @@ public class PartModel {
 	int quantity;
 	String qunit;
 		
+	int id;
+	
 	public PartModel(String name, String number, String v, int q) {
 		partno = number;
 		partname = name;
@@ -19,6 +21,7 @@ public class PartModel {
 			vendor = v;
 		quantity = q;
 		this.qunit = "Unkown";
+		id = 0;
 	}
 	
     public String getPnum(){
@@ -84,6 +87,14 @@ public class PartModel {
     
     public void setVendor(String s){
     	vendor = s;
+    }
+    
+    public void setId(int i){
+    	id = i;
+    }
+    
+    public int getId(){
+    	return id;
     }
     
     public void setQuantity(int s){

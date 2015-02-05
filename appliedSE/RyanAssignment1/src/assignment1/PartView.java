@@ -50,6 +50,7 @@ public class PartView extends JFrame implements ActionListener{
 		remove(Inventory);
 		Inventory = new InventoryPanel(model, this);
 		add(Inventory, BorderLayout.CENTER);
+		this.revalidate();
 	}
 	
 	public void registerListener(PartController controller){
