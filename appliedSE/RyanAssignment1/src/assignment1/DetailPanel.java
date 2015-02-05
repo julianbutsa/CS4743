@@ -25,6 +25,8 @@ public class DetailPanel extends JPanel implements ActionListener{
 	private JLabel pvendor;
 	private JLabel pquantity;
 	private JLabel qunit;
+	private JLabel external;
+	private JLabel exp;
 	
 	public DetailPanel(PartModel m, PartView v, InventoryPanel iv, InventoryModel im) {
 		this.model = m;
@@ -39,6 +41,8 @@ public class DetailPanel extends JPanel implements ActionListener{
 		vendor = new JLabel("Vendor:");
 		quantity = new JLabel("Quantity:");
 		id = new JLabel("Product ID:");
+		external = new JLabel("External Part #:");
+		exp = new JLabel(model.getExternal());
 		pname = new JLabel(model.getPname());
 		pnumber = new JLabel(model.getPnum());
 		pvendor = new JLabel(model.getVendor());
@@ -56,13 +60,19 @@ public class DetailPanel extends JPanel implements ActionListener{
 		this.add(pname);
 		this.add(number);
 		this.add(pnumber);
-		this.add(vendor);
-		this.add(pvendor);
+		if(model.hasVendor()){
+			this.add(vendor);
+			this.add(pvendor);
+		}
 		this.add(quantity);
-		this.add(qunit);
 		this.add(pquantity);
 		this.add(id);
 		this.add(pid);
+		if(model.hasExternal()){
+			this.add(external);
+			this.add(exp);
+		}
+		this.add(qunit);
 		this.add(ibutton);
 		this.add(ebutton);
 

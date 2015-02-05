@@ -14,10 +14,11 @@ public class PartController implements ActionListener{
 			case "add":
 				addPartPanel add = view.getAddPartPanel();
 			int q = add.getQtf();
-			PartModel m = new PartModel(add.getNametf(), add.getNumbertf(), add.getVendortf(), q);
+			PartModel m = new PartModel(add.getNametf(), add.getNumbertf(), add.getVendortf(),add.getEtf(), q);
 			m.setQunit(add.getQUnit());
 			int a = model.addPart(m);
 			if(a != 0){
+				add.setEtf("Error Detected");
 				add.setQtf("Error Detected");
 				add.setNametf("Error Detected");
 				add.setNumbertf("Error Detected");
@@ -27,6 +28,7 @@ public class PartController implements ActionListener{
 				add.setNametf("");
 				add.setNumbertf("");
 				add.setVendortf("");
+				add.setEtf("");
 			}
 			view.refreshInventory();
 			view.repaint();

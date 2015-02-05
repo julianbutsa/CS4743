@@ -18,6 +18,8 @@ public class editPanel extends JPanel implements ActionListener{
 	private JLabel vendor;
 	private JLabel quantity;
 	private JLabel qunit;
+	private JLabel external;
+	private JTextField etf;
 	private JTextField nametf;
 	private JTextField numbertf;
 	private JTextField vendortf;
@@ -37,6 +39,8 @@ public class editPanel extends JPanel implements ActionListener{
 		vendor = new JLabel("Vendor:");
 		quantity = new JLabel("Quantity:");
 		qunit = new JLabel("Unit");
+		external = new JLabel("External Part #:");
+		etf = new JTextField("", 50);
 		nametf = new JTextField(model.getPname(), 255);
 		numbertf = new JTextField(model.getPnum(), 20);
 		vendortf = new JTextField(model.getVendor(),255);
@@ -55,6 +59,8 @@ public class editPanel extends JPanel implements ActionListener{
 		this.add(vendortf);
 		this.add(quantity);
 		this.add(qtf);
+		this.add(external);
+		this.add(etf);
 		this.add(qunit);
 		this.add(qunitinput);
 		this.add(ibutton);
@@ -67,6 +73,7 @@ public class editPanel extends JPanel implements ActionListener{
 		switch(arg0.getActionCommand()){
 			case "done":
 				model.editModel(nametf.getText(), numbertf.getText(), vendortf.getText(), Integer.parseInt(qtf.getText()), invmod, qunitinput.getSelectedItem().toString());
+				model.setExternal(etf.getText());
 				dpanel = new DetailPanel(model, view, inview, invmod);
 				view.add(dpanel, BorderLayout.CENTER);
 				view.pSet(dpanel);

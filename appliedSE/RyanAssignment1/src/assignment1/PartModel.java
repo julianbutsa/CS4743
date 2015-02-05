@@ -11,20 +11,40 @@ public class PartModel {
 	String vendor;
 	int quantity;
 	int id;
+	String external;
 	String qunit;
 
-	public PartModel(String name, String number, String v, int q) {
+	public PartModel(String name, String number, String v, String e, int q) {
 		partno = number;
 		partname = name;
 		if(v != null)
 			vendor = v;
+		if(e != null)
+			external = e;
 		quantity = q;
 		id = 0;
-		this.qunit = "Unkown";
+		this.qunit = "Unknown";
 	}
 	
     public String getPnum(){
     	return partno;
+    }
+    
+    public void setExternal(String s){
+    	external = s;
+    }
+    
+    
+    public boolean hasExternal(){
+    	if(external != null){
+    		return true;
+    	}else{
+    		return false;
+    	}
+    }
+    
+    public String getExternal(){
+    	return external;
     }
     
     public String getPname(){
