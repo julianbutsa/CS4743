@@ -17,10 +17,12 @@ public class addPartPanel extends JPanel{
 	private JLabel number;
 	private JLabel vendor;
 	private JLabel quantity;
+	private JLabel qunitLabel;
 	private JTextField nametf;
 	private JTextField numbertf;
 	private JTextField vendortf;
 	private JTextField qtf;
+	private JComboBox qunit;
 
 	
 	public addPartPanel(InventoryModel m, PartView v) {
@@ -35,10 +37,13 @@ public class addPartPanel extends JPanel{
 		number = new JLabel("Part Number:");
 		vendor = new JLabel("Vendor:");
 		quantity = new JLabel("Quantity:");
+		qunitLabel = new JLabel("Units");
 		nametf = new JTextField("", 255);
 		numbertf = new JTextField("", 20);
 		vendortf = new JTextField("",255);
 		qtf = new JTextField("", 20);
+		String[] units = {"Unknown", "Linear Feet", "Pieces"};
+		qunit = new JComboBox(units);
 		
 		this.add(name);
 		this.add(nametf);
@@ -48,6 +53,8 @@ public class addPartPanel extends JPanel{
 		this.add(vendortf);
 		this.add(quantity);
 		this.add(qtf);
+		this.add(qunitLabel);
+		this.add(qunit);
 		this.add(addbutton);
 
 		
@@ -84,7 +91,12 @@ public class addPartPanel extends JPanel{
 		qtf.setText(s);
 	}
 	
+	public String getQUnit(){
+		return this.qunit.getSelectedItem().toString();
+	}
 	public void registerListener(PartController controller){
 		addbutton.addActionListener(controller);
 	}
+
+
 }

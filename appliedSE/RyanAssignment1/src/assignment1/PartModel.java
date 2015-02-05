@@ -11,7 +11,8 @@ public class PartModel {
 	String vendor;
 	int quantity;
 	int id;
-	
+	String qunit;
+
 	public PartModel(String name, String number, String v, int q) {
 		partno = number;
 		partname = name;
@@ -19,6 +20,7 @@ public class PartModel {
 			vendor = v;
 		quantity = q;
 		id = 0;
+		this.qunit = "Unkown";
 	}
 	
     public String getPnum(){
@@ -45,7 +47,7 @@ public class PartModel {
     	return quantity;
     }
     
-    public int editModel(String name, String number, String v, int q, InventoryModel model){
+    public int editModel(String name, String number, String v, int q, InventoryModel model, String unit){
     	if(number.length() > 20 || name.length() > 255 || v.length() > 20){
 			System.out.println("Invalid String Input Size");
 			return -1;
@@ -62,10 +64,15 @@ public class PartModel {
 			System.out.println("Name Taken");
 			return -1;
 		}
+		if(unit.equals("Unknown")){
+			System.out.println("don't pick unkown");
+			return -1;
+		}
     	partno = number;
     	partname = name;
     	vendor = v;
     	quantity = q;
+    	qunit = unit;
     	return 0;
     }
     
@@ -92,5 +99,15 @@ public class PartModel {
     public void setQuantity(int s){
     	quantity = s;
     }
+
+	public String getQunit() {
+		return qunit;
+	}
+
+	public void setQunit(String qunit) {
+		this.qunit = qunit;
+	}
+    
+    
 	
 }
