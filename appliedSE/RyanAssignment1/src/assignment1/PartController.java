@@ -16,6 +16,7 @@ public class PartController implements ActionListener{
 			int q = add.getQtf();
 			PartModel m = new PartModel(add.getNametf(), add.getNumbertf(), add.getVendortf(), q);
 			m.setQunit(add.getQUnit());
+			m.setLocation(add.getLocal());
 			int a = model.addPart(m);
 			if(a != 0){
 				add.setQtf("Error Detected");
