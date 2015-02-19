@@ -1,32 +1,24 @@
 package assignment1;
 
-import java.util.ArrayList;
 
 public class PartModel {
-	
-	private ArrayList<PartModelObserver> observer = new ArrayList<PartModelObserver>();
 	
 	String partno;
 	String partname;
 	String vendor;
-	int quantity;
 	int id;
 	String external;
 	String qunit;
-	String location;
 
-	public PartModel(String name, String number, String v, String e, int q) {
+	public PartModel(String name, String number, String v, String e) {
 		partno = number;
 		partname = name;
 		if(v != null)
 			vendor = v;
 		if(e != null)
 			external = e;
-		quantity = q;
 		id = 0;
-		this.qunit = "Unkown";
-		this.location = "Unknown";
-		id = 0;
+		this.qunit = "Unknown";
 	}
 	
     public String getPnum(){
@@ -66,41 +58,32 @@ public class PartModel {
     	return vendor;
     }
     
-    public int getQuantity(){
+    /*public int getQuantity(){
     	return quantity;
-    }
+    }*/
     
-    public int editModel(String name, String number, String v, int q, InventoryModel model, String unit, String location){
+    public int editModel(String name, String number, String v, InventoryModel model, String unit){
     	if(number.length() > 20 || name.length() > 255 || v.length() > 20){
 			System.out.println("Invalid String Input Size");
 			return -1;
 		}
 		if(number.length() <= 0 || name.length() <= 0){
-			System.out.println("Required Fields: Part Name, Part Number, and Quantity");
+			System.out.println("Required Fields: Part Name, Part Number");
 			return -1;
 		}
-		if(q < 0){
-			System.out.println("Invalid Quantity");
-			return -1;
-		}
-		if(model.checkName(name) == -1){
-			System.out.println("Name Taken");
+		if(model.checkNum(number) == -1){
+			System.out.println("Part Number Taken");
 			return -1;
 		}
 		if(unit.equals("Unknown")){
-			System.out.println("Unit Type cannot be unknown");
-			return -1;
-		}
-		if(location.equals("Unknown")){
-			System.out.println("Location cannot be unknown");
+			System.out.println("Don't pick unkown");
 			return -1;
 		}
     	partno = number;
     	partname = name;
     	vendor = v;
-    	quantity = q;
+    	//quantity = q;
     	qunit = unit;
-    	this.location  = location;
     	return 0;
     }
     
@@ -124,9 +107,9 @@ public class PartModel {
     	return id;
     }
     
-    public void setQuantity(int s){
+    /*public void setQuantity(int s){
     	quantity = s;
-    }
+    }*/
 
 	public String getQunit() {
 		return qunit;
@@ -135,16 +118,6 @@ public class PartModel {
 	public void setQunit(String qunit) {
 		this.qunit = qunit;
 	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
-	
-	
     
     
 	

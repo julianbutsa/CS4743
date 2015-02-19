@@ -16,7 +16,6 @@ public class PartPanel extends JPanel implements ActionListener{
 	private JLabel vendor;
 	private JLabel quantity;
 	private JLabel qunit;
-	private JLabel location;
 	private JButton delete;
 	private JButton detail;
 	
@@ -39,19 +38,14 @@ public class PartPanel extends JPanel implements ActionListener{
 			this.vendor = new JLabel("N/A");
 		}
 		this.qunit = new JLabel(m.getQunit());
-		this.quantity = new JLabel(String.valueOf(m.getQuantity()));
+		//this.quantity = new JLabel(String.valueOf(m.getQuantity()));
 		this.id = new JLabel(String.valueOf(m.getId()));
-		this.location = new JLabel(m.getLocation());
 		this.add(partname);
 		this.add(partnumber);
 		this.add(vendor);
-
-
-		
-		this.add(quantity);
-		this.add(qunit);
+		//this.add(quantity); 
 		this.add(id);
-		this.add(location);
+		this.add(qunit);
 		
 		this.delete = new JButton("Delete");
 		delete.addActionListener(this);
