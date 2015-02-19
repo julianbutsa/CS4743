@@ -1,7 +1,10 @@
 package assignment1;
 
 import java.awt.event.*;
+
 import javax.swing.JFrame;
+
+import DBclass.DBQuery;
 
 public class Assign1 {
 	/*
@@ -17,5 +20,9 @@ public class Assign1 {
 		PartController controller = new PartController(model, view);
 		view.registerListener(controller);
 		
+		
+		DBQuery q = new DBQuery();
+		//q.addLocation("the place");
+		q.destroy();
 	}
 }

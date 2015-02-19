@@ -29,6 +29,21 @@ public class PartModel {
 		id = 0;
 	}
 	
+	
+	public PartModel(int id, String name, String number, String v, String e, int q, String unit, String location) {
+		partno = number;
+		partname = name;
+		if(v != null)
+			vendor = v;
+		if(e != null)
+			external = e;
+		quantity = q;
+		this.id = id;
+		this.qunit = unit;
+		this.location = location;
+	}
+	
+	
     public String getPnum(){
     	return partno;
     }
