@@ -22,7 +22,8 @@ public class Assign1 {
 		
 		
 		DBQuery q = new DBQuery();
-		//q.addLocation("the place");
+		q.getParts();
+		q.addLocation("the place");
 		q.destroy();
 	}
 }

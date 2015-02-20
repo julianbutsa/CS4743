@@ -20,11 +20,17 @@
 package DBclass;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Properties;
+
+import javax.sql.DataSource;
 
 import assignment1.PartModel;
 
@@ -40,11 +46,8 @@ public class DBQuery {
 	public DBQuery(){
 
 		//connect to the database
-		MysqlDataSource source = new MysqlDataSource();
+		DataSource source = getDataSource();
 		try {
-			source.setURL("jdbc:mysql://devcloud.fulgentcorp.com:3306/jbc878");
-			source.setUser("jbc878");
-			source.setPassword("Ril6gl1LglxhUyQAdq6H​");		
 			this.myConnection = source.getConnection();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -101,6 +104,30 @@ public class DBQuery {
 		}
 		
 	}
+	
+	
+	private DataSource getDataSource() {
+		Properties props = new Properties();
+		FileInputStream fis = null;
+        try {
+        	fis = new FileInputStream("db.properties");
+            props.load(fis);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        try {
+        	MysqlDataSource mysqlDS = new MysqlDataSource();
+        	mysqlDS.setURL(props.getProperty("MYSQL_DB_URL"));
+        	mysqlDS.setUser(props.getProperty("MYSQL_DB_USER"));
+        	mysqlDS.setPassword(props.getProperty("MYSQL_DB_PW"));
+        	return mysqlDS;
+        } catch(RuntimeException e) {
+            e.printStackTrace();
+            return null;
+        }
+	}
+	
 	
 	public void destroy(){
 		try {
