@@ -16,17 +16,14 @@ public class addPartPanel extends JPanel{
 	private JLabel name;
 	private JLabel number;
 	private JLabel vendor;
-	private JLabel quantity;
 	private JLabel qunitLabel;
-	private JLabel locationLabel;
 	private JLabel external;
 	private JTextField nametf;
 	private JTextField numbertf;
 	private JTextField vendortf;
-	private JTextField qtf;
-	private JComboBox<String> qunit;
-	private JComboBox<String> location;
 	private JTextField etf;
+	private JComboBox qunit;
+
 	
 	public addPartPanel(InventoryModel m, PartView v) {
 		this.model = m;
@@ -39,34 +36,25 @@ public class addPartPanel extends JPanel{
 		name = new JLabel("Part Name:");
 		number = new JLabel("Part Number:");
 		vendor = new JLabel("Vendor:");
-		quantity = new JLabel("Quantity:");
-		qunitLabel = new JLabel("Units");
-		locationLabel = new JLabel("Location");
+		qunitLabel = new JLabel("Units:");
 		external = new JLabel("External Part #:");
 		nametf = new JTextField("", 255);
 		numbertf = new JTextField("", 20);
 		vendortf = new JTextField("",255);
-		qtf = new JTextField("", 20);
 		etf = new JTextField("", 50);
 		String[] units = {"Unknown", "Linear Feet", "Pieces"};
-		qunit = new JComboBox<String>(units);
-		String[] local = { "Facility 1 Warehouse 1", "Facility 1 Warehouse 2", "Facility 2",
-				"Unknown"} ;
-		location = new JComboBox<String>(local);
+		qunit = new JComboBox(units);
+		
 		this.add(name);
 		this.add(nametf);
 		this.add(number);
 		this.add(numbertf);
 		this.add(vendor);
 		this.add(vendortf);
-		this.add(quantity);
-		this.add(qtf);
 		this.add(external);
 		this.add(etf);
 		this.add(qunitLabel);
 		this.add(qunit);
-		this.add(locationLabel);
-		this.add(location);
 		this.add(addbutton);
 
 		
@@ -81,10 +69,6 @@ public class addPartPanel extends JPanel{
 	}
 	public String getVendortf(){
 		return vendortf.getText();
-	}
-	
-	public int getQtf(){
-		return Integer.parseInt(qtf.getText());
 	}
 	
 	public void setNametf(String s){
@@ -107,16 +91,9 @@ public class addPartPanel extends JPanel{
 		vendortf.setText(s);
 	}
 	
-	public void setQtf(String s){
-		qtf.setText(s);
-	}
 	
 	public String getQUnit(){
 		return this.qunit.getSelectedItem().toString();
-	}
-	
-	public String getLocal(){
-		return this.location.getSelectedItem().toString();
 	}
 	public void registerListener(PartController controller){
 		addbutton.addActionListener(controller);
