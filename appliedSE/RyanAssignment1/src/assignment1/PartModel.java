@@ -3,12 +3,12 @@ package assignment1;
 
 public class PartModel {
 	
-	String partno;
-	String partname;
-	String vendor;
-	int id;
-	String external;
-	String qunit;
+	private String partno;
+	private String partname;
+	private String vendor;
+	private int id;
+	private String external;
+	private String qunit;
 
 	public PartModel(String name, String number, String v, String e) {
 		partno = number;
@@ -21,20 +21,7 @@ public class PartModel {
 		this.qunit = "Unknown";
 	}
 	
-	
-	public PartModel(int id, String name, String number, String v, String e, int q, String unit, String location) {
-		partno = number;
-		partname = name;
-		if(v != null)
-			vendor = v;
-		if(e != null)
-			external = e;
-		quantity = q;
-		this.id = id;
-		this.qunit = unit;
-		this.location = location;
-	}
-	
+
 	
     public String getPnum(){
     	return partno;
@@ -132,6 +119,18 @@ public class PartModel {
 
 	public void setQunit(String qunit) {
 		this.qunit = qunit;
+	}
+	
+	@Override
+	public String toString(){
+		String s = "";
+		s = s+"pid : " + id + "\n";
+		s = s+"partno : " + partno + "\n";
+		s = s+"partname : " + partname + "\n";
+		s = s+"vendor : " + vendor + "\n";
+		s = s+"external : " + external + "\n";
+		s = s+"qunit : " + qunit + "\n";
+		return  s;
 	}
     
     

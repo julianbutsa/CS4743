@@ -30,7 +30,7 @@ public class PartView extends JFrame implements ActionListener{
 		add(Inventory, BorderLayout.CENTER);
 		currentPanel = Inventory;
 		
-		ItemInventory = new ItemInventoryPanel(model, this);
+		//ItemInventory = new ItemInventoryPanel(model, this);
 		//add(ItemInventory, BorderLayout.CENTER);
 		currentPanel = Inventory;
 		

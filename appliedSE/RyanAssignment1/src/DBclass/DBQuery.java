@@ -32,6 +32,7 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import assignment1.ItemModel;
 import assignment1.PartModel;
 
 
@@ -40,7 +41,7 @@ public class DBQuery {
 	public Connection myConnection;
 	public String url = 		"jdbc:mysql://devcloud.fulgentcorp.com:3306/jbc878";
 	public String user =		"jbc878";
-	public String password = 	"Ril6gl1LglxhUyQAdq6H​";
+	public String password = 	"Ril6gl1LglxhUyQAdq6H";
 	
 	
 	public DBQuery(){
@@ -57,20 +58,40 @@ public class DBQuery {
 	
 	public ArrayList<PartModel> getParts(){
 		ArrayList<PartModel> returnList = null;
-		String query = "select * from part join inventory on part.pid = inventory.pid join location on inventory.lid = location.lid";
+		String query = "select * from part";
 		try {
 			Statement s = myConnection.createStatement();
 			ResultSet rs = s.executeQuery(query);
 			returnList = new ArrayList<PartModel>();
 			//take everything from the resultSet and put it in a model class
 			while(rs.next()){
-				System.out.println(rs.toString());
-				//PartModel temp = new PartModel(	rs.getInt("pid"), Integer.toString(rs.getInt("pnum")), rs.getString("pname"),
-					//							rs.getString("vendor"), "",rs.getInt("qty"), rs.getString("unit"), rs.getString("lname")  );
-				//returnList.add(temp);
+				PartModel temp = new PartModel( rs.getString("pname"), rs.getString("pnum"), 
+												rs.getString("vendor"), rs.getString("pnumext") );
+				temp.setId(rs.getInt("pid"));
+				returnList.add(temp);
+			}	
+			//close that stuff in case it got opened.
+			rs.close();
+			s.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 		
+		return returnList;
+	}
+	public ArrayList<ItemModel> getInventory(){
+		ArrayList<ItemModel> returnList = null;
+		String query = "select * from inventory join location on (inventory.lid = location.lid)";
+		try {
+			Statement s = myConnection.createStatement();
+			ResultSet rs = s.executeQuery(query);
+			returnList = new ArrayList<ItemModel>();
+			//take everything from the resultSet and put it in a model class
+			while(rs.next()){
+				PartModel tpart = this.getPart(rs.getInt("pid"));
+				ItemModel m = new ItemModel(tpart, rs.getString("lname"), rs.getInt("qty"));
+				returnList.add(m);
 			}
-			
-			
 			//close that stuff in case it got opened.
 			rs.close();
 			s.close();
@@ -81,28 +102,176 @@ public class DBQuery {
 		return returnList;
 	}
 	
-	public void addPart(PartModel p){
-		//insert into part table
-		
-		
-		//insert into inventory table
-		
+	public ArrayList<String> getLocations(){
+		ArrayList<String> returnList = null;
+		String query = "select lname from location";
+		try {
+			Statement s = myConnection.createStatement();
+			ResultSet rs = s.executeQuery(query);
+			returnList = new ArrayList<String>();
+			//take everything from the resultSet and put it in a model class
+			while(rs.next()){
+				returnList.add(rs.getString("lname"));
+			}
+			//close that stuff in case it got opened.
+			rs.close();
+			s.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 		
+		return returnList;
 	}
 	
-	public void addInventory(){
+	public PartModel getPart(int pid){
+		String query = "select * from part where pid = " + pid;
+		PartModel p = null;
+		try{
+			Statement s = myConnection.createStatement();
+			ResultSet r = s.executeQuery(query);
+			if(r.next()){
+				p = new PartModel(r.getString("pname"), r.getString("pnum"), 
+						r.getString("vendor"), r.getString("pnumext"));
+				p.setId(r.getInt("pid"));
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return p;
+	}
+	
+	public ItemModel getItem(){
+		return null;
+	}
+	
+	public int getLocationId(String l){
+		int lid = 0;
+		String query = "select lid from location where lname = \""+l+"\"";
+		try{
+			Statement s = myConnection.createStatement();
+			ResultSet r =  s.executeQuery(query);
+			if(r.next()){
+				lid = r.getInt("lid");
+			}
+			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return lid;
+	}
+	
+	
+	public void addPart(PartModel p){
+		
+		//insert into part table
+		String query = "insert into part (pname, pnum, pnumext, unit, vendor) "
+				+ "values (\""+p.getPname()+"\", "+p.getPnum()+", "+p.getExternal()+",\""+p.getQunit()+"\",\""+p.getVendor()+"\")";
+		try{
+			Statement s = myConnection.createStatement();
+			s.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+			ResultSet rs = s.getGeneratedKeys();
+			if(rs.next()){
+				int pid = rs.getInt(1);
+				p.setId(pid);
+			}
+			
+			
+			//this.addToInventory(p);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}		
+	}
+	
+	public void addToInventory(ItemModel i){
+		int pid = i.getPart().getId();
+		int lid = this.getLocationId(i.getLocation());
+		String query = "insert into inventory (pid, lid, qty) "
+				+ "values (\""+pid+"\", "+ lid +", "+i.getQuantity()+")";
+		try{
+			Statement s = myConnection.createStatement();
+			int iid = s.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+			i.setId(iid);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
 		
 	}
 	
 	public void addLocation(String lname){
 		
-		String query = "insert into location (lname) values (" +lname+ ")";
+		String query = "insert into location (lname) values (\""+lname+"\")";
 		try{
 			Statement s = myConnection.createStatement();
-			s.executeQuery(query);
+			s.executeUpdate(query);
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
 		
+	}
+	
+	/*
+	 * delete function 
+	 */
+	
+	public void deletePart(PartModel p){
+		this.deleteInventoryEntry(p.getId());
+		String query = "delete from part where pid = "+p.getId();
+		try{
+			Statement s = myConnection.createStatement();
+			s.executeUpdate(query);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void deleteInventoryEntry(ItemModel i){
+		String query = "delete from inventory where pid = " + i.getId();
+		try{
+			Statement s = myConnection.createStatement();
+			s.executeUpdate(query);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public void deleteInventoryEntry(int pid){
+		String query = "delete from inventory where pid = "+pid;
+		try{
+			Statement s = myConnection.createStatement();
+			s.executeUpdate(query);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
+	/* 
+	 * Update functions
+	 */
+	public void updatePart(PartModel p){
+		
+		//insert into part table
+		String query = "update part set pname = \""+p.getPname()+"\" , pnum =\""+p.getPnum()+"\" ,pnumext= \""+p.getExternal()+"\""
+				+ ",vendor= \""+p.getVendor()+"\",unit= \"" + p.getQunit() +"\"";
+		try{
+			Statement s = myConnection.createStatement();
+			s.executeUpdate(query);			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}		
+	}
+	
+	public void updateInventory(ItemModel i){
+		
+		//insert into part table
+		String query = "update inventory set pid = "+i.getPart().getId()+" , lid ="+this.getLocationId(i.getLocation()) +", qty = " + i.getQuantity();
+		try{
+			Statement s = myConnection.createStatement();
+			s.executeUpdate(query);			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}		
 	}
 	
 	

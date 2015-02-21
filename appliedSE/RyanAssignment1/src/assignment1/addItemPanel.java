@@ -19,6 +19,7 @@ public class addItemPanel extends JPanel implements ActionListener{
 	private JTextField numtf;
 	private JTextField quantitytf;
 	private JComboBox locationtf;
+	private JComboBox itemf;
 
 	
 	public addItemPanel(InventoryModel m, PartView v) {
@@ -35,8 +36,13 @@ public class addItemPanel extends JPanel implements ActionListener{
 		location = new JLabel("Location:");
 		numtf = new JTextField("", 255);
 		quantitytf = new JTextField("",255);
-		String[] units = {"Facility 1 WareHouse 1", "Facility 1 Warehouse 2", "Facility 2"};
-		locationtf = new JComboBox(units);
+		ArrayList<String> l = m.myDB.getLocations();
+		String[] locations = new String[l.size()];
+		for(int i = 0; i < l.size(); i++){
+			locations[i] = l.get(i);
+		}
+		//String[] locations = {"Facility 1 WareHouse 1", "Facility 1 Warehouse 2", "Facility 2"};
+		locationtf = new JComboBox(locations);
 		
 		this.add(num);
 		this.add(numtf);

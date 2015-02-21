@@ -12,7 +12,8 @@ public class Assign1 {
 	 */
 	public static void main(String[] args) {
 		/* create new model, view and controller */
-        InventoryModel model = new InventoryModel();
+		DBQuery db = new DBQuery();
+        InventoryModel model = new InventoryModel(db);
 		PartView view = new PartView(model);
 		view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		view.setSize(650, 400);
@@ -21,9 +22,5 @@ public class Assign1 {
 		view.registerListener(controller);
 		
 		
-		DBQuery q = new DBQuery();
-		q.getParts();
-		q.addLocation("the place");
-		q.destroy();
 	}
 }

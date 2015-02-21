@@ -5,8 +5,11 @@ import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import DBclass.DBQuery;
+
 public class ModelTest {
 
+		public static DBQuery db;
 		/*
 		 * TestPart: Tests the Edit model functionality.
 		 * 
@@ -14,12 +17,12 @@ public class ModelTest {
 		 */
 		@BeforeClass
 		public static void setUpBeforeClass() throws Exception{
-			
+			db = new DBQuery();
 		}
 		
 		@Test
 		public void testPart(){
-			InventoryModel m = new InventoryModel();
+			InventoryModel m = new InventoryModel(db);
 			PartModel model = new PartModel("Name", "1", "Vendor",null);
 			m.addPart(model);
 			model.editModel("Eman", "2", "Distributor",  m, "Unknown");
@@ -31,7 +34,7 @@ public class ModelTest {
 		public void testInventory(){
 			int a, b, c, d, e = 0;
 			PartModel t = new PartModel("Eman", "2", "Distrubutor",null);
-			InventoryModel model = new InventoryModel();
+			InventoryModel model = new InventoryModel(db);
 			a = model.addPart("Name", "1", "Vendor",null, 5);
 			b = model.addPart(t);
 			c = model.addPart("Test1", "Test1", "Test1",null, 0);

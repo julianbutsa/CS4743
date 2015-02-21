@@ -65,4 +65,14 @@ public class ItemModel {
 	public void setId(int i){
 		id = i;
 	}
+	
+	@Override
+	public String toString(){
+		String s = "";
+		s += "id:" + id +"\n";
+		s += "location:" + location + "\n";
+		s += "quantity:" + quantity + "\n";
+		s += "Part:\n" + part.toString();
+		return s;
+	}
 }

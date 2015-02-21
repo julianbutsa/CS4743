@@ -2,6 +2,8 @@ package assignment1;
 
 import java.util.ArrayList;
 
+import DBclass.DBQuery;
+
 public class InventoryModel {
 	
 	//private ArrayList<PartModelObserver> observer = new ArrayList<PartModelObserver>();
@@ -10,10 +12,16 @@ public class InventoryModel {
 	private ArrayList<ItemModel> ItemInventory = new ArrayList<ItemModel>();
 	private PartModel a, b, c;
 	private ItemModel z;
+	private String location;
+	public DBQuery myDB;
 	int currentid = 1;
 	int currentItemId = 1;
 	
-	public InventoryModel() {
+	public InventoryModel(DBQuery DB) {
+		this.myDB = DB;
+		this.Inventory = DB.getParts();
+		this.ItemInventory = DB.getInventory();
+		/*
 		parts = 0;
 		a = new PartModel("Part A", "24", "Maker Industries", null);
 		b = new PartModel("Part B", "17", null, null);
@@ -28,6 +36,7 @@ public class InventoryModel {
 		ItemInventory.add(z);
 		z = new ItemModel(b, null, 3);
 		ItemInventory.add(z);
+		*/
 	}
 	
 	public ArrayList<PartModel> getInventory(){
@@ -114,8 +123,9 @@ public class InventoryModel {
     		return -1;
     	}
     	ItemModel item = new ItemModel(p, l, q);
-    	item.setId(currentItemId++);
-    	ItemInventory.add(item);
+    	//item.setId(currentItemId++);
+    	//ItemInventory.add(item);
+    	myDB.addToInventory(item);
     	return 0;
     }
     
@@ -128,8 +138,9 @@ public class InventoryModel {
 			System.out.println("Invalid Quantity");
 			return -1;
 		}
-    	i.setId(currentItemId++);
-    	ItemInventory.add(i);
+    	//i.setId(currentItemId++);
+    	//ItemInventory.add(i);
+    	myDB.addToInventory(i);
     	return 0;
     }
     
@@ -151,18 +162,23 @@ public class InventoryModel {
 			return -1;
 		}
     	PartModel d = new PartModel(name, number, v, e);
-    	d.setId(currentid++);
-    	Inventory.add(d);
+    	//d.setId(currentid++);
+    	//Inventory.add(d);
+    	myDB.addPart(d);
+    	
     	return 0;
     }
     
     public int deletePart(PartModel m){
+    	/*
     	for(int i = 0; i < ItemInventory.size(); i++)
     		if(ItemInventory.get(i).getPart() == m){
     			System.out.println("Cannot delete part associated with Item");
     			return -1;
     		}
     	Inventory.remove(m);
+    	*/
+    	myDB.deletePart(m);
     	return 0;
     }
     
@@ -171,12 +187,13 @@ public class InventoryModel {
     		System.out.println("Quantity must be Zero to Delete Item");
     		return -1;
     	}
-    	ItemInventory.remove(m);
+    	//ItemInventory.remove(m);
+    	myDB.deleteInventoryEntry(m);
     	return 0;
     }
     
-    public PartModel getPart(int n){
-    	return Inventory.get(n);
+    public PartModel getPart(int pid){
+    	return myDB.getPart(pid);
     }
     
 
