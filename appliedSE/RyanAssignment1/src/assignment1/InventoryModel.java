@@ -21,22 +21,6 @@ public class InventoryModel {
 		this.myDB = DB;
 		this.Inventory = DB.getParts();
 		this.ItemInventory = DB.getInventory();
-		/*
-		parts = 0;
-		a = new PartModel("Part A", "24", "Maker Industries", null);
-		b = new PartModel("Part B", "17", null, null);
-		c = new PartModel("Part C", "35", "Vendor Industries",null);
-		Inventory.add(a);
-		a.setId(currentid++);
-		Inventory.add(b);
-		b.setId(currentid++);
-		Inventory.add(c);
-		c.setId(currentid++);
-		z = new ItemModel(a, "Facility 1 Warehouse 1", 4);
-		ItemInventory.add(z);
-		z = new ItemModel(b, null, 3);
-		ItemInventory.add(z);
-		*/
 	}
 	
 	public ArrayList<PartModel> getInventory(){
@@ -70,6 +54,7 @@ public class InventoryModel {
 		}
 		m.setId(currentid++);
     	Inventory.add(m);
+		myDB.addPart(m);
     	return 0;
     }
     
@@ -83,7 +68,7 @@ public class InventoryModel {
     }
     
     public PartModel getPartByNum(String n){
-    	PartModel a = new PartModel("Error","Error","Error","Error");
+    	PartModel a = null;
     	for(int i = 0; i < Inventory.size();i++){
     		if(Inventory.get(i).getPnum().equals(n)){
     			a = Inventory.get(i);
@@ -123,8 +108,8 @@ public class InventoryModel {
     		return -1;
     	}
     	ItemModel item = new ItemModel(p, l, q);
-    	//item.setId(currentItemId++);
-    	//ItemInventory.add(item);
+    	item.setId(currentItemId++);
+    	ItemInventory.add(item);
     	myDB.addToInventory(item);
     	return 0;
     }
@@ -138,8 +123,8 @@ public class InventoryModel {
 			System.out.println("Invalid Quantity");
 			return -1;
 		}
-    	//i.setId(currentItemId++);
-    	//ItemInventory.add(i);
+    	i.setId(currentItemId++);
+    	ItemInventory.add(i);
     	myDB.addToInventory(i);
     	return 0;
     }
@@ -162,8 +147,8 @@ public class InventoryModel {
 			return -1;
 		}
     	PartModel d = new PartModel(name, number, v, e);
-    	//d.setId(currentid++);
-    	//Inventory.add(d);
+    	d.setId(currentid++);
+    	Inventory.add(d);
     	myDB.addPart(d);
     	
     	return 0;
@@ -187,7 +172,7 @@ public class InventoryModel {
     		System.out.println("Quantity must be Zero to Delete Item");
     		return -1;
     	}
-    	//ItemInventory.remove(m);
+    	ItemInventory.remove(m);
     	myDB.deleteInventoryEntry(m);
     	return 0;
     }
@@ -195,7 +180,11 @@ public class InventoryModel {
     public PartModel getPart(int pid){
     	return myDB.getPart(pid);
     }
-    
+
+	public void setInventory(ArrayList<PartModel> inventory) {
+		Inventory = inventory;
+	}
+	
 
 	
 }

@@ -19,7 +19,7 @@ public class addItemPanel extends JPanel implements ActionListener{
 	private JTextField numtf;
 	private JTextField quantitytf;
 	private JComboBox locationtf;
-	private JComboBox itemf;
+	private JComboBox partf;
 
 	
 	public addItemPanel(InventoryModel m, PartView v) {
@@ -36,16 +36,23 @@ public class addItemPanel extends JPanel implements ActionListener{
 		location = new JLabel("Location:");
 		numtf = new JTextField("", 255);
 		quantitytf = new JTextField("",255);
+		
 		ArrayList<String> l = m.myDB.getLocations();
 		String[] locations = new String[l.size()];
 		for(int i = 0; i < l.size(); i++){
 			locations[i] = l.get(i);
 		}
-		//String[] locations = {"Facility 1 WareHouse 1", "Facility 1 Warehouse 2", "Facility 2"};
 		locationtf = new JComboBox(locations);
 		
+		ArrayList<PartModel> p = m.getInventory();
+		String[] parts = new String[p.size()];
+		for(int i = 0; i < p.size(); i++){
+			parts[i] = p.get(i).getPnum();
+		}
+		partf = new JComboBox(parts); 
 		this.add(num);
-		this.add(numtf);
+		//this.add(numtf);
+		this.add(partf);
 		this.add(quantity);
 		this.add(quantitytf);
 		this.add(location);
@@ -63,16 +70,22 @@ public class addItemPanel extends JPanel implements ActionListener{
 	// TODO Auto-generated method stub
 		switch(arg0.getActionCommand()){
 		case "additem":
-		PartModel a = model.getPartByNum(numtf.getText());
-		ItemModel m = new ItemModel(a, locationtf.getSelectedItem().toString(), Integer.parseInt(quantitytf.getText()));
-		int z = model.addItem(m);
-		if(z != 0){
+		PartModel a = model.getPartByNum(partf.getSelectedItem().toString());
+		if(a != null){
+			ItemModel m = new ItemModel(a, locationtf.getSelectedItem().toString(), Integer.parseInt(quantitytf.getText()));
+			int z = model.addItem(m);
+			if(z != 0){
+				numtf.setText("Error Detected");
+				quantitytf.setText("Error Detected");
+			}else{
+				numtf.setText("");
+				quantitytf.setText("");
+			}
+		}else{
 			numtf.setText("Error Detected");
 			quantitytf.setText("Error Detected");
-		}else{
-			numtf.setText("");
-			quantitytf.setText("");
 		}
+		
 		view.refreshInventory();
 		view.repaint();
 		break;
