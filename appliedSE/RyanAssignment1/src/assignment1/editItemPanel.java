@@ -3,6 +3,7 @@ package assignment1;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -16,7 +17,7 @@ public class editItemPanel extends JPanel implements ActionListener{
 	private JLabel part;
 	private JLabel location;
 	private JLabel quantity;
-	private JTextField ptf;
+	private JComboBox ptf;
 	private JTextField quantitytf;
 	private JComboBox locationtf;
 	
@@ -30,15 +31,38 @@ public class editItemPanel extends JPanel implements ActionListener{
 		
 		part = new JLabel("Part Number:");
 		location = new JLabel("Part Number:");
-		quantity = new JLabel("Vendor:");
-		ptf = new JTextField(model.getPart().getPnum(), 255);
+		quantity = new JLabel("Quantity:");
 		quantitytf = new JTextField(String.valueOf(model.getQuantity()), 20);
 		ibutton = new JButton("Done");
 		ibutton.addActionListener(this);
 		ibutton.setActionCommand("done");
 		
-		String[] input = {"Facility 1 WareHouse 1", "Facility 1 Warehouse 2", "Facility 2"};
-		locationtf = new JComboBox(input);
+		ArrayList<String> l = invmod.myDB.getLocations();
+		String[] locations = new String[l.size()];
+		for(int i = 0; i < l.size(); i++){
+			locations[i] = l.get(i);
+		}
+		locationtf = new JComboBox(locations);
+		for(int i = 0; i < locationtf.getItemCount(); i++){
+			if(locationtf.getItemAt(i).toString().equals(m.getLocation())){
+				locationtf.setSelectedIndex(i);
+			}
+		}
+		
+		
+		ArrayList<PartModel> p = invmod.getInventory();
+		String[] parts = new String[p.size()];
+		for(int i = 0; i < p.size(); i++){
+			parts[i] = p.get(i).getPnum();
+		}
+		ptf = new JComboBox(parts); 
+		for(int i = 0; i < ptf.getItemCount(); i++){
+			if(ptf.getItemAt(i).toString().equals(m.getPart().getPnum())){
+				ptf.setSelectedIndex(i);
+			}
+		}
+		
+		//locationtf = new JComboBox(input);
 		this.add(part);
 		this.add(ptf);
 		this.add(quantity);
@@ -54,7 +78,7 @@ public class editItemPanel extends JPanel implements ActionListener{
 		// TODO Auto-generated method stub
 		switch(arg0.getActionCommand()){
 			case "done":
-				model.editModel(ptf.getText(), locationtf.getSelectedItem().toString(), Integer.parseInt(quantitytf.getText()), invmod);
+				model.editModel(ptf.getSelectedItem().toString(), locationtf.getSelectedItem().toString(), Integer.parseInt(quantitytf.getText()), invmod);
 				dpanel = new ItemDetailPanel(model, view, inview, invmod);
 				view.add(dpanel, BorderLayout.CENTER);
 				view.pSet(dpanel);

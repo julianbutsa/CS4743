@@ -37,7 +37,7 @@ public class editPanel extends JPanel implements ActionListener{
 		vendor = new JLabel("Vendor:");
 		qunit = new JLabel("Unit");
 		external = new JLabel("External Part #:");
-		etf = new JTextField("", 50);
+		etf = new JTextField(model.getExternal(), 50);
 		nametf = new JTextField(model.getPname(), 255);
 		numbertf = new JTextField(model.getPnum(), 20);
 		vendortf = new JTextField(model.getVendor(),255);
@@ -66,8 +66,13 @@ public class editPanel extends JPanel implements ActionListener{
 		// TODO Auto-generated method stub
 		switch(arg0.getActionCommand()){
 			case "done":
-				model.editModel(nametf.getText(), numbertf.getText(), vendortf.getText(), invmod, qunitinput.getSelectedItem().toString());
+				int result = model.editModel(nametf.getText(), numbertf.getText(), vendortf.getText(), invmod, qunitinput.getSelectedItem().toString());
+				if(result == -1){
+					//Error handling. Probably a dialgue box.
+					break;
+				}
 				model.setExternal(etf.getText());
+				invmod.updatePart(model);
 				dpanel = new DetailPanel(model, view, inview, invmod);
 				view.add(dpanel, BorderLayout.CENTER);
 				view.pSet(dpanel);

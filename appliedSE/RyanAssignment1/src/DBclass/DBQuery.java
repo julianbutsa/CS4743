@@ -90,6 +90,7 @@ public class DBQuery {
 			while(rs.next()){
 				PartModel tpart = this.getPart(rs.getInt("pid"));
 				ItemModel m = new ItemModel(tpart, rs.getString("lname"), rs.getInt("qty"));
+				m.setId(rs.getInt("invid"));
 				returnList.add(m);
 			}
 			//close that stuff in case it got opened.
@@ -250,10 +251,51 @@ public class DBQuery {
 	 * Update functions
 	 */
 	public void updatePart(PartModel p){
-		
+		PartModel old = this.getPart(p.getId());
+		boolean first = true;
 		//insert into part table
-		String query = "update part set pname = \""+p.getPname()+"\" , pnum =\""+p.getPnum()+"\" ,pnumext= \""+p.getExternal()+"\""
-				+ ",vendor= \""+p.getVendor()+"\",unit= \"" + p.getQunit() +"\"";
+		String query = "update part set ";
+		if(!old.getPname().equals(p.getPname())){
+			query += "pname = \""+p.getPname()+"\"";
+			if(first){
+				first = false;
+			}
+		}
+		if(!old.getPnum().equals(p.getPnum())){
+			if(first){
+				first = false;
+			}else{
+				query += ",";
+			}
+			query += " pnum =\""+p.getPnum()+"\"";
+		}
+		if(!old.getExternal().equals(p.getExternal())){
+			if(first){
+				first = false;
+			}else{
+				query += ",";
+			}
+			query += "pnumext= \""+p.getExternal()+"\"";
+		}
+		if(!old.getVendor().equals(p.getVendor())){
+			if(first){
+				first = false;
+			}else{
+				query += ",";
+			}
+			query +="vendor= \""+p.getVendor()+"\"";
+		}
+		if(!old.getQunit().equals(p.getQunit())){
+			if(first){
+				first = false;
+			}else{
+				query += ",";
+			}
+			query += "unit= \"" + p.getQunit() +"\"";
+		}
+		
+		query +=" where pid = " +p.getId();
+		//System.out.println(query);
 		try{
 			Statement s = myConnection.createStatement();
 			s.executeUpdate(query);			
@@ -263,15 +305,31 @@ public class DBQuery {
 	}
 	
 	public void updateInventory(ItemModel i){
-		
-		//insert into part table
-		String query = "update inventory set pid = "+i.getPart().getId()+" , lid ="+this.getLocationId(i.getLocation()) +", qty = " + i.getQuantity();
+		/*
+		String query = "SET foreign_key_checks = 0 ";
+		try{
+			Statement s = myConnection.createStatement();
+			s.executeUpdate(query);			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		*/
+		System.out.println(i.getLocation() );
+		String query =  "update ignore inventory set pid = "+i.getPart().getId()+", lid ="+this.getLocationId(i.getLocation()) +", qty = " + i.getQuantity() +" where invid ="+ i.getId();
 		try{
 			Statement s = myConnection.createStatement();
 			s.executeUpdate(query);			
 		}catch(SQLException e){
 			e.printStackTrace();
 		}		
+		/*
+		query = "SET foreign_key_checks = 1";
+		try{
+			Statement s = myConnection.createStatement();
+			s.executeUpdate(query);			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}*/
 	}
 	
 	

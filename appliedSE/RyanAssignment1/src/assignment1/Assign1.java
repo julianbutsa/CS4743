@@ -18,8 +18,10 @@ public class Assign1 {
 		view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		view.setSize(650, 400);
 		view.setVisible(true);
-		PartController controller = new PartController(model, view);
-		view.registerListener(controller);
+		
+		
+	//	PartController controller = new PartController(model, view);
+	//	view.registerListener(controller);
 		
 		
 	}

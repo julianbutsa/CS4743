@@ -9,6 +9,7 @@ public class PartController implements ActionListener{
 	
 
 	public void actionPerformed(ActionEvent arg0) {
+		System.out.println("Got an addpart command");
 		// TODO Auto-generated method stub
 		switch(arg0.getActionCommand()){
 			case "add":

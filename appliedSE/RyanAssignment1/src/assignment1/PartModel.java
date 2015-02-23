@@ -73,7 +73,7 @@ public class PartModel {
 			System.out.println("Required Fields: Part Name, Part Number");
 			return -1;
 		}
-		if(model.checkNum(number) == -1){
+		if(model.checkNum(this) == -1 ){
 			System.out.println("Part Number Taken");
 			return -1;
 		}
@@ -86,6 +86,7 @@ public class PartModel {
     	vendor = v;
     	//quantity = q;
     	qunit = unit;
+    	
     	return 0;
     }
     

@@ -10,9 +10,6 @@ public class InventoryModel {
 	int parts;
 	private ArrayList<PartModel> Inventory = new ArrayList<PartModel>();
 	private ArrayList<ItemModel> ItemInventory = new ArrayList<ItemModel>();
-	private PartModel a, b, c;
-	private ItemModel z;
-	private String location;
 	public DBQuery myDB;
 	int currentid = 1;
 	int currentItemId = 1;
@@ -39,6 +36,12 @@ public class InventoryModel {
     	String name = m.getPname();
     	String number = m.getPnum();
     	String v = m.getVendor();
+    	if(number.equals("")){
+    		return -1;
+    	}
+    	if(name.equals("")){
+    		return -1;
+    	}
     	if(number.length() > 20 || name.length() > 255 || v.length() > 20){
 			System.out.println("Invalid String Input Size");
 			return -1;
@@ -155,14 +158,14 @@ public class InventoryModel {
     }
     
     public int deletePart(PartModel m){
-    	/*
+    	
     	for(int i = 0; i < ItemInventory.size(); i++)
     		if(ItemInventory.get(i).getPart() == m){
     			System.out.println("Cannot delete part associated with Item");
     			return -1;
     		}
     	Inventory.remove(m);
-    	*/
+    	
     	myDB.deletePart(m);
     	return 0;
     }
@@ -183,6 +186,27 @@ public class InventoryModel {
 
 	public void setInventory(ArrayList<PartModel> inventory) {
 		Inventory = inventory;
+	}
+
+	public void updatePart(PartModel model) {
+		// TODO Auto-generated method stub
+		myDB.updatePart(model);
+	}
+	
+	public void updateInventory(ItemModel model){
+		System.out.println("updating inventory");
+		myDB.updateInventory(model);
+	}
+
+	public int checkNum(PartModel partModel) {
+		// TODO Auto-generated method stub
+		for(int i = 0; i < Inventory.size(); i++){
+			PartModel temp = Inventory.get(i);
+			if(temp.getPnum().equals(partModel.getPnum()) && partModel!=temp){
+				return -1;
+			}
+		}
+		return 0;
 	}
 	
 

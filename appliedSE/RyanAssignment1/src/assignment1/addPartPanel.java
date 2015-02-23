@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class addPartPanel extends JPanel{
+public class addPartPanel extends JPanel implements ActionListener{
 	private InventoryModel model;
 	private PartView view;
 	private JButton addbutton;
@@ -31,7 +31,9 @@ public class addPartPanel extends JPanel{
 		
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		addbutton = new JButton("Add");
+		addbutton.addActionListener(this);
 		addbutton.setActionCommand("add");
+		
 		
 		name = new JLabel("Part Name:");
 		number = new JLabel("Part Number:");
@@ -95,9 +97,37 @@ public class addPartPanel extends JPanel{
 	public String getQUnit(){
 		return this.qunit.getSelectedItem().toString();
 	}
+	/*
 	public void registerListener(PartController controller){
 		addbutton.addActionListener(controller);
 	}
+*/
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		switch(arg0.getActionCommand()){
+			case "add":
+				//addPartPanel add = view.getAddPartPanel();
+				PartModel m = new PartModel(nametf.getText(), numbertf.getText(), vendortf.getText(),etf.getText());
+				m.setQunit(qunit.getSelectedItem().toString());
+				int a = model.addPart(m);
+				if(a != 0){
+					setEtf("Error Detected");
+					setNametf("Error Detected");
+					setNumbertf("Error Detected");
+					setVendortf("Error Detected");
+				}else{
+					setNametf("");
+					setNumbertf("");
+					setVendortf("");
+					setEtf("");
+				}
+				view.refreshInventory();
+				view.repaint();
+				break;
+		}
+	}
+	
 
 
 }

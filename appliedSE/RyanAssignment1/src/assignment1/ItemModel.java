@@ -31,6 +31,7 @@ public class ItemModel {
 		part = a;
 		location = l;
 		quantity = q;
+		iv.updateInventory(this);
 		return 0;
 	}
 	

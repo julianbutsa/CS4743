@@ -96,10 +96,11 @@ public class PartView extends JFrame implements ActionListener{
 		}
 	}
 	
+	/*
 	public void registerListener(PartController controller){
 		addPanel.registerListener(controller);
 	}
-	
+	*/
 	public InventoryPanel getInventory(){
 		return Inventory;
 	}
