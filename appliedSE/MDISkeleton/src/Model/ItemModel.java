@@ -1,5 +1,7 @@
 package Model;
 
+import control.InventoryController;
+
 public class ItemModel {
 	int id;
 	PartModel part;
@@ -18,7 +20,15 @@ public class ItemModel {
 		id = 0;
 	}
 	
-	public int editModel(String num, String l, int q, InventoryModel iv){
+	public ItemModel() {
+		// TODO Auto-generated constructor stub
+		this.id = -1;
+		this.part = new PartModel();
+		this.location = "";
+		this.quantity = 0;
+	}
+
+	public int editModel(String num, String l, int q, InventoryController iv){
 		PartModel a = iv.getPartByNum(num);
 		if(iv.checkItemInventory(a,l) == -1){
     		System.out.println("Part/Location Combination Taken");
@@ -31,7 +41,6 @@ public class ItemModel {
 		part = a;
 		location = l;
 		quantity = q;
-		iv.updateInventory(this);
 		return 0;
 	}
 	

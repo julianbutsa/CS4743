@@ -1,5 +1,7 @@
 package Model;
 
+import control.InventoryController;
+
 
 public class PartModel {
 	
@@ -10,7 +12,7 @@ public class PartModel {
 	private String external;
 	private String qunit;
 
-	public PartModel(String name, String number, String v, String e) {
+	public PartModel(String name, String number, String v, String e , String u) {
 		partno = number;
 		partname = name;
 		if(v != null)
@@ -18,12 +20,24 @@ public class PartModel {
 		if(e != null)
 			external = e;
 		id = 0;
-		this.qunit = "Unknown";
+		this.qunit = u;
 	}
 	
 
 	
-    public String getPnum(){
+    public PartModel() {
+		// TODO Auto-generated constructor stub
+    	this.partno="";
+    	this.partname="";
+    	this.vendor="";
+    	this.id = -1;
+    	this.external="";
+    	this.qunit="";
+	}
+
+
+
+	public String getPnum(){
     	return partno;
     }
     
@@ -64,7 +78,9 @@ public class PartModel {
     	return quantity;
     }*/
     
-    public int editModel(String name, String number, String v, InventoryModel model, String unit){
+    
+    //TODO add external number
+    public int editModel(String name, String number, String e, String v, InventoryController model, String unit){
     	if(number.length() > 20 || name.length() > 255 || v.length() > 20){
 			System.out.println("Invalid String Input Size");
 			return -1;
@@ -84,8 +100,8 @@ public class PartModel {
     	partno = number;
     	partname = name;
     	vendor = v;
-    	//quantity = q;
     	qunit = unit;
+    	external = e;
     	
     	return 0;
     }

@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -17,6 +18,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import control.InventoryController;
+
 /*
  * MasterFrame : a little MDI skeleton that has communication from child to JInternalFrame 
  * 					and from child to the top-level JFrame (MasterFrame)  
@@ -26,8 +29,13 @@ public class win extends JFrame {
 	private JDesktopPane desktop;
 	private int newFrameX = 0, newFrameY = 0; //used to cascade or stagger starting x,y of JInternalFrames
 	
+	private InventoryController masterController;
+	
+	
 	public win(String title) {
 		super(title);
+		
+		this.masterController = new InventoryController();
 		//create menu for adding inner frames
 		JMenuBar menuBar = new JMenuBar();
 		JMenu menu = new JMenu("File");
@@ -90,15 +98,15 @@ public class win extends JFrame {
 	
 	
 	//creates and displays the JFrame
-	public static void createAndShowGUI() {
+	public void createAndShowGUI() {
 		win frame = new win("MDI Skeleton");
 		frame.setSize(1000, 1000);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 		frame.setVisible(true);		
 		
 		//open an inventory window
-		frame.openMDIChild(new PartListPanel(frame));
-		frame.openMDIChild(new InventoryPanel(frame));
+		frame.openMDIChild(new PartListPanel(frame, masterController.getInventory()));
+		frame.openMDIChild(new InventoryPanel(frame, masterController.getItemInventory()));
 	}
 
 	//main: launch the JFrame on the EDT	
@@ -110,6 +118,13 @@ public class win extends JFrame {
         });
 	}
 
+	public void openPartWindow(){
+		
+	}
+	
+	public void openInventoryWindow(){
+		
+	}
 	
 	public int getWidth(){
 		return super.getWidth();
@@ -117,6 +132,10 @@ public class win extends JFrame {
 	
 	public int getHeight(){
 		return super.getHeight();
+	}
+	
+	public InventoryController getController(){
+		return this.masterController;
 	}
 	
 	

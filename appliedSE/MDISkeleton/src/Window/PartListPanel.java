@@ -1,5 +1,6 @@
 package Window;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -11,34 +12,35 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
+import control.PartObserver;
 import DBclass.DBQuery;
 import Model.*;
 
-public class PartListPanel extends ChildPanel implements MouseListener, ActionListener {
+public class PartListPanel extends ChildPanel implements MouseListener, ActionListener, PartObserver {
 	private JScrollPane scrollPane;
 	private JTable listTable;
 	private JButton addButton;
 	private JButton deleteButton;
 	private JButton editButton;
 	
-	public DBQuery myDB;
 	public ArrayList<PartModel> partList;
 	
 	
-	public PartListPanel(win m) {
+	public PartListPanel(win m, ArrayList<PartModel> p) {
 		super(m);
+		master.getController().registerPartObserver(this);
 		this.myTitle = "Part List";
 		
 		//get list
-		this.myDB = new DBQuery();
-		
+		this.partList = p;
+		this.setPreferredSize(new Dimension(450,500));
 		// TODO Auto-generated constructor stub
 		
 		//add list to a scroll panel so it can expand
 				this.scrollPane = new JScrollPane();
 				//add everything to the panel
 
-				this.partList=myDB.getParts();
+				//this.partList= myDB.getParts();
 				
 				this.scrollPane.setVisible(true);
 				this.makeTable();
@@ -48,21 +50,21 @@ public class PartListPanel extends ChildPanel implements MouseListener, ActionLi
 				addButton = new JButton("Add Part");
 				addButton.setActionCommand("add");
 				addButton.addActionListener(this);
-				this.add(addButton);
+				contentPanel.add(addButton);
 				
 				deleteButton = new JButton("Delete Part");
 				deleteButton.setActionCommand("delete");
 				deleteButton.addActionListener(this);
 				deleteButton.setEnabled(false);
-				this.add(deleteButton);
+				contentPanel.add(deleteButton);
 				
 				editButton = new JButton("Edit Part");
 				editButton.setActionCommand("edit");
 				editButton.addActionListener(this);
 				editButton.setEnabled(false);
-				this.add(editButton);
+				contentPanel.add(editButton);
 				
-				this.add(scrollPane);
+				contentPanel.add(scrollPane);
 	}
 	
 	
@@ -117,16 +119,21 @@ public class PartListPanel extends ChildPanel implements MouseListener, ActionLi
 		switch(e.getActionCommand()){
 			case "add":
 				//call editPanel
+				PartDetailPanel child = new PartDetailPanel(this.master, new PartModel(), 0);
+				master.openMDIChild(child);
 				//itemPanel tempframe = new itemPanel(itemPanel.ADD_MODE, 0, myHandler);
 				break;
 			case "delete":
 				if ( listTable.getSelectedRow() >= 0){
-				//	myHandler.deleteItem(listTable.getSelectedRow());
+					if(master.getController().deletePart(listTable.getSelectedRow()) == -1){
+							master.displayChildMessage("Failed to delete.\n Inventory entries remain");
+						}
 				}
 				break;
 			case "edit":
 				if (listTable.getSelectedRow() >= 0 ){
-					master.openMDIChild(new PartDetailPanel(master, partList.get(listTable.getSelectedRow() )));
+					PartModel p = master.getController().getPart(listTable.getSelectedRow());
+					master.openMDIChild(new PartDetailPanel(master,  p, 1));
 					//itemPanel editframe = new itemPanel(itemPanel.EDIT_MODE, listTable.getSelectedRow(), myHandler);
 
 				}
@@ -186,12 +193,13 @@ public class PartListPanel extends ChildPanel implements MouseListener, ActionLi
 	}
 	
 	
-	//@Override
-	//public void updateObserver() {
-	//	// TODO Auto-generated method stub
-	//	makeTable();
-	//	this.scrollPane.repaint();
+	@Override
+	public void updateObserver(PartModel p, int action) {
+		// TODO Auto-generated method stub
+		this.partList = master.getController().myDB.getParts();
+		makeTable();
+		this.scrollPane.repaint();
 		
-	//}
+	}
 
 }

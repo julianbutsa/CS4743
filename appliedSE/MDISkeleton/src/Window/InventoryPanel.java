@@ -1,5 +1,7 @@
 package Window;
 
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -11,12 +13,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
+import control.InventoryObserver;
 import DBclass.DBQuery;
-import Model.InventoryModel;
 import Model.ItemModel;
 import Model.PartModel;
 
-public class InventoryPanel extends ChildPanel implements ActionListener , MouseListener{
+public class InventoryPanel extends ChildPanel implements ActionListener , MouseListener, InventoryObserver{
 
 	private JScrollPane scrollPane;
 	private JTable listTable;
@@ -28,52 +30,57 @@ public class InventoryPanel extends ChildPanel implements ActionListener , Mouse
 	public ArrayList<ItemModel> inventory;
 	
 	
-	public InventoryPanel(win m) {
+	public InventoryPanel(win m, ArrayList<ItemModel> i ) {
 		super(m);
+		master.getController().registerInvObserver(this);
 		this.myTitle = "Inventory";
+
+		//TODO figure out how to set the location of a child panel
 		this.setLocation(master.getWidth()/2, 0);
+		
 		//get list
-		this.myDB = new DBQuery();
+		this.inventory = i;
 		
 		// TODO Auto-generated constructor stub
 		
 		//add list to a scroll panel so it can expand
 				this.scrollPane = new JScrollPane();
 				//add everything to the panel
+				this.setPreferredSize(new Dimension(450,500));
 
 				this.scrollPane.setVisible(true);
 				this.makeTable();
-				
+
 				
 				//make menu
-				addButton = new JButton("Add Part");
+				addButton = new JButton("Add Entry");
 				addButton.setActionCommand("add");
 				addButton.addActionListener(this);
-				this.add(addButton);
+				contentPanel.add(addButton);
 				
-				deleteButton = new JButton("Delete Part");
+				deleteButton = new JButton("Delete Entry");
 				deleteButton.setActionCommand("delete");
 				deleteButton.addActionListener(this);
 				deleteButton.setEnabled(false);
-				this.add(deleteButton);
+				contentPanel.add(deleteButton);
 				
-				editButton = new JButton("Edit Part");
+				editButton = new JButton("Edit Entry");
 				editButton.setActionCommand("edit");
 				editButton.addActionListener(this);
 				editButton.setEnabled(false);
-				this.add(editButton);
+				contentPanel.add(editButton);
 				
-				this.add(scrollPane);
+				contentPanel.add(scrollPane);
+				
+
 	}
 	
 	
 	private void makeTable(){
 		
-		ArrayList<ItemModel> items = myDB.getInventory();
-		this.inventory = items;
-		java.util.Iterator<ItemModel> i = items.iterator();
+		java.util.Iterator<ItemModel> i = inventory.iterator();
 		
-		Object[][] data = new String[items.size()][4];
+		Object[][] data = new String[inventory.size()][4];
 		
 		int index = 0;
 		while(i.hasNext()){
@@ -115,18 +122,25 @@ public class InventoryPanel extends ChildPanel implements ActionListener , Mouse
 		// TODO Auto-generated method stub
 		switch(e.getActionCommand()){
 			case "add":
+				ItemModel i = new ItemModel();
+				InventoryDetailPanel ipan = new InventoryDetailPanel(master, i, 0);
+				master.openMDIChild(ipan);
 				//call editPanel
 				//itemPanel tempframe = new itemPanel(itemPanel.ADD_MODE, 0, myHandler);
 				break;
 			case "delete":
 				if ( listTable.getSelectedRow() >= 0){
-				//	myHandler.deleteItem(listTable.getSelectedRow());
+					ItemModel toDelete = master.getController().getInventoryEntry(listTable.getSelectedRow());
+					if(master.getController().deleteItem(toDelete) == -1){
+						master.displayChildMessage("Quantity needs to be 0 before deletion");
+					}
 				}
 				break;
 			case "edit":
 				if (listTable.getSelectedRow() >= 0 ){
-					//itemPanel editframe = new itemPanel(itemPanel.EDIT_MODE, listTable.getSelectedRow(), myHandler);
-
+					ItemModel i2 = master.getController().getInventoryEntry(listTable.getSelectedRow());
+					InventoryDetailPanel ipan2 = new InventoryDetailPanel( master, i2, 1 );
+					master.openMDIChild(ipan2);
 				}
 		}
 		
@@ -182,14 +196,14 @@ public class InventoryPanel extends ChildPanel implements ActionListener , Mouse
 		// TODO Auto-generated method stub
 	
 	}
-	
-	
-	//@Override
-	//public void updateObserver() {
-	//	// TODO Auto-generated method stub
-	//	makeTable();
-	//	this.scrollPane.repaint();
-		
-	//}
 
+
+	@Override
+	public void updateObserver(ItemModel i, int action) {
+		// TODO Auto-generated method stub
+		this.inventory = master.getController().getItemInventory();
+		makeTable();
+		this.scrollPane.repaint();
+	}
+	
 }

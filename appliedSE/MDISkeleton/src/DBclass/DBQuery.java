@@ -63,7 +63,7 @@ public class DBQuery {
 			//take everything from the resultSet and put it in a model class
 			while(rs.next()){
 				PartModel temp = new PartModel( rs.getString("pname"), rs.getString("pnum"), 
-												rs.getString("vendor"), rs.getString("pnumext") );
+												rs.getString("vendor"), rs.getString("pnumext"),rs.getString("unit"));
 				temp.setId(rs.getInt("pid"));
 				returnList.add(temp);
 			}	
@@ -129,7 +129,7 @@ public class DBQuery {
 			ResultSet r = s.executeQuery(query);
 			if(r.next()){
 				p = new PartModel(r.getString("pname"), r.getString("pnum"), 
-						r.getString("vendor"), r.getString("pnumext"));
+						r.getString("vendor"), r.getString("pnumext"), r.getString("unit"));
 				p.setId(r.getInt("pid"));
 			}
 		}catch(SQLException e){
@@ -164,6 +164,7 @@ public class DBQuery {
 		//insert into part table
 		String query = "insert into part (pname, pnum, pnumext, unit, vendor) "
 				+ "values (\""+p.getPname()+"\", "+p.getPnum()+", "+p.getExternal()+",\""+p.getQunit()+"\",\""+p.getVendor()+"\")";
+		System.out.println(query);
 		try{
 			Statement s = myConnection.createStatement();
 			s.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
@@ -224,7 +225,7 @@ public class DBQuery {
 	}
 	
 	public void deleteInventoryEntry(ItemModel i){
-		String query = "delete from inventory where pid = " + i.getId();
+		String query = "delete from inventory where invid = " + i.getId();
 		try{
 			Statement s = myConnection.createStatement();
 			s.executeUpdate(query);
