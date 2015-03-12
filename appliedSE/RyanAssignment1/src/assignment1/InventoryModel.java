@@ -10,6 +10,7 @@ public class InventoryModel {
 	int parts;
 	private ArrayList<PartModel> Inventory = new ArrayList<PartModel>();
 	private ArrayList<ItemModel> ItemInventory = new ArrayList<ItemModel>();
+	private ArrayList<ProductModel> ProductInventory = new ArrayList<ProductModel>();
 	public DBQuery myDB;
 	int currentid = 1;
 	int currentItemId = 1;
@@ -18,6 +19,8 @@ public class InventoryModel {
 		this.myDB = DB;
 		this.Inventory = DB.getParts();
 		this.ItemInventory = DB.getInventory();
+		this.ProductInventory = DB.getProducts();
+		
 	}
 	
 	public ArrayList<PartModel> getInventory(){
@@ -26,6 +29,10 @@ public class InventoryModel {
 	
 	public ArrayList<ItemModel> getItemInventory(){
 		return ItemInventory;
+	}
+	
+	public ArrayList<ProductModel> getProductInventory(){
+		return ProductInventory;
 	}
 	
     public int getSize(){

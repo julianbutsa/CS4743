@@ -1,0 +1,35 @@
+
+
+drop table if exists inventory;
+drop table if exists part;
+drop table if exists location;
+
+create table part(
+	pid int primary key auto_increment,
+    pnum int unique not null,
+    pnumext int,
+    pname varchar(255) unique not null,
+    unit varchar(255),
+    vendor varchar(255)
+);
+
+create table location(
+	lid int primary key auto_increment,
+	lname varchar(255)
+);
+
+create table inventory(
+    invid int primary key auto_increment,
+    pid int,
+    lid int,
+    qty int,
+    foreign key (pid) references part(pid),
+    foreign key (lid) references location(lid),
+    key (lid, pid)
+);
+
+insert into location (lname) values ("test place 1");
+insert into location (lname) values ("test place 2");
+insert into location (lname) values ("test place 3");
+insert into location (lname) values ("test place 4");
+insert into location (lname) values ("test place 5");

@@ -34,6 +34,7 @@ import javax.sql.DataSource;
 
 import assignment1.ItemModel;
 import assignment1.PartModel;
+import assignment1.ProductModel;
 
 
 public class DBQuery {
@@ -79,6 +80,30 @@ public class DBQuery {
 		} 		
 		return returnList;
 	}
+	
+	public ArrayList<ProductModel> getProducts(){
+		ArrayList<ProductModel> returnList = null;
+		String query = "select * from product";
+		try {
+			Statement s = myConnection.createStatement();
+			ResultSet rs = s.executeQuery(query);
+			returnList = new ArrayList<ProductModel>();
+			//take everything from the resultSet and put it in a model class
+			while(rs.next()){
+				ProductModel temp = new ProductModel( rs.getString("productno"), rs.getString("description"));
+				temp.setId(rs.getInt("id"));
+				returnList.add(temp);
+			}	
+			//close that stuff in case it got opened.
+			rs.close();
+			s.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 		
+		return returnList;
+	}
+	
 	public ArrayList<ItemModel> getInventory(){
 		ArrayList<ItemModel> returnList = null;
 		String query = "select * from inventory join location on (inventory.lid = location.lid)";
@@ -192,6 +217,33 @@ public class DBQuery {
 			Statement s = myConnection.createStatement();
 			int iid = s.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 			i.setId(iid);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void addProduct(ProductModel i){
+		int pid = i.getId();
+		String no = i.getprodNum();
+		String desc = i.getDesc();
+		String query = "insert into product (id, productno, description) "
+				+ "values (\""+pid+"\", "+ no +", "+desc+")";
+		try{
+			Statement s = myConnection.createStatement();
+			int iid = s.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+			i.setId(iid);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void deleteProduct(ProductModel p){
+		String query = "delete from product where id = "+p.getId();
+		try{
+			Statement s = myConnection.createStatement();
+			s.executeUpdate(query);
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
