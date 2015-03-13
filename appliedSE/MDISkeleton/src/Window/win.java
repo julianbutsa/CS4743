@@ -107,6 +107,7 @@ public class win extends JFrame {
 		//open an inventory window
 		frame.openMDIChild(new PartListPanel(frame, masterController.getInventory()));
 		frame.openMDIChild(new InventoryPanel(frame, masterController.getItemInventory()));
+		frame.openMDIChild(new ProductPanel(frame, masterController.getProducts()));
 	}
 
 	//main: launch the JFrame on the EDT	

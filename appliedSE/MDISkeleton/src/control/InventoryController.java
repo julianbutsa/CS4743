@@ -6,12 +6,14 @@ import java.util.Observer;
 import DBclass.DBQuery;
 import Model.ItemModel;
 import Model.PartModel;
+import Model.ProductModel;
 
 public class InventoryController {
 	//private ArrayList<PartModelObserver> observer = new ArrayList<PartModelObserver>();
 	int parts;
-	private ArrayList<PartModel> Inventory = new ArrayList<PartModel>();
-	private ArrayList<ItemModel> ItemInventory = new ArrayList<ItemModel>();
+	private ArrayList<PartModel> Inventory;// = new ArrayList<PartModel>();
+	private ArrayList<ItemModel> ItemInventory;// = new ArrayList<ItemModel>();
+	private ArrayList<ProductModel> ProductList;// = new ArrayList<ProductModel>();
 	
 	private ArrayList<PartObserver> partObservers;
 	private ArrayList<InventoryObserver> invObservers;
@@ -26,7 +28,7 @@ public class InventoryController {
 		this.myDB = new DBQuery();
 		this.Inventory = myDB.getParts();
 		this.ItemInventory = myDB.getInventory();
-		
+		this.ProductList = myDB.getProducts();
 		this.partObservers = new ArrayList<PartObserver>();
 		this.invObservers = new ArrayList<InventoryObserver>();
 	}
@@ -41,6 +43,10 @@ public class InventoryController {
 	
 	public ArrayList<ItemModel> getItemInventory(){
 		return ItemInventory;
+	}
+	
+	public ArrayList<ProductModel> getProducts(){
+		return ProductList;
 	}
 	
     public int getSize(){
@@ -218,7 +224,11 @@ public class InventoryController {
     	updateInvObservers(m, 2);
     	return 0;
     }
-    
+
+	public int deleteProduct(ProductModel toDelete) {
+		// TODO Auto-generated method stub
+		return 0;
+	} 
     public PartModel getPart(int pid){
     	return Inventory.get(pid);
     }
@@ -283,5 +293,19 @@ public class InventoryController {
 		// TODO Auto-generated method stub
 		return ItemInventory.get(selectedRow);
 	}
+
+
+
+
+
+	public ProductModel getProductEntry(int selectedRow) {
+		// TODO Auto-generated method stub
+		return ProductList.get(selectedRow);
+	}
+
+
+
+
+
 
 }

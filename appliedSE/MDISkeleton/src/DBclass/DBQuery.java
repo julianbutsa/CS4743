@@ -29,6 +29,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
+
 import javax.sql.DataSource;
 
 import Model.*;
@@ -300,6 +301,56 @@ public class DBQuery {
 		}catch(SQLException e){
 			e.printStackTrace();
 		}		
+	}
+	
+	public ArrayList<ProductModel> getProducts(){
+		ArrayList<ProductModel> returnList = null;
+		String query = "select * from product";
+		try {
+			Statement s = myConnection.createStatement();
+			ResultSet rs = s.executeQuery(query);
+			returnList = new ArrayList<ProductModel>();
+			//take everything from the resultSet and put it in a model class
+			while(rs.next()){
+				ProductModel temp = new ProductModel(  rs.getString("description"), rs.getString("productno"));
+				temp.setId(rs.getInt("id"));
+				returnList.add(temp);
+			}	
+			//close that stuff in case it got opened.
+			rs.close();
+			s.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 		
+		return returnList;
+	}
+	
+	public void addProduct(ProductModel i){
+		int pid = i.getId();
+		String no = i.getprodNum();
+		String desc = i.getDesc();
+		String query = "insert into product (id, productno, description) "
+				+ "values (\""+pid+"\", "+ no +", "+desc+")";
+		try{
+			Statement s = myConnection.createStatement();
+			int iid = s.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+			i.setId(iid);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void deleteProduct(ProductModel p){
+		String query = "delete from product where id = "+p.getId();
+		try{
+			Statement s = myConnection.createStatement();
+			s.executeUpdate(query);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public void updateInventory(ItemModel i){
