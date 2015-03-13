@@ -23,6 +23,16 @@ public class PartModel {
 		this.qunit = u;
 	}
 	
+	public PartModel(String name, String number, String v, String e) {
+		partno = number;
+		partname = name;
+		if(v != null)
+			vendor = v;
+		if(e != null)
+			external = e;
+		id = 0;
+		this.qunit = "Unknown";
+	}
 
 	
     public PartModel() {
@@ -97,13 +107,17 @@ public class PartModel {
 			System.out.println("Don't pick unkown");
 			return -1;
 		}
-    	partno = number;
-    	partname = name;
-    	vendor = v;
-    	qunit = unit;
-    	external = e;
+		
+		if(number.startsWith("P")){
+			partno = number;
+			partname = name;
+			vendor = v;
+    		qunit = unit;
+    		external = e;
+    		return 0;
+		}
     	
-    	return 0;
+    	return -1;
     }
     
     public void setPnum(String s){

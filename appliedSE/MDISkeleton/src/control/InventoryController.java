@@ -124,6 +124,15 @@ public class InventoryController {
     	return 0;
     }
     
+    public int checkProductList(ProductModel p){
+    	for(int a = 0; a < ProductList.size(); a++){
+    		if(p.getprodNum() == ProductList.get(a).getprodNum()){
+    			return -1;
+    		}
+    	}
+    	return 0;
+    }
+    
     
     public int addItem(PartModel p, String l, int q){
     	if(checkItemInventory(p,l) == -1){
@@ -138,6 +147,17 @@ public class InventoryController {
     	ItemInventory.add(item);
     	myDB.addToInventory(item);
     	updateInvObservers(item, 0);
+    	return 0;
+    }
+    
+    public int addProduct(ProductModel p){
+    	if(checkProductList(p) == -1){
+    		System.out.println("Product Number taken");
+    		return -1;
+    	}
+    	ProductList.add(p);
+    	myDB.addProduct(p);
+    	//updateInvObservers(item, 0);
     	return 0;
     }
     
@@ -156,7 +176,7 @@ public class InventoryController {
     	return 0;
     }
     
-    /*
+    
     public int addPart(String name, String number, String v, String e,  int q){
     	if(number.length() > 20 || name.length() > 255 || v.length() > 20 || e.length() > 50){
 			System.out.println("Invalid String Input Size");
@@ -182,7 +202,7 @@ public class InventoryController {
     	this.updatePartObservers(d, 2);
     	return 0;
     }
-    */
+    
     //delete based off part
     public int deletePart(PartModel m){
     	
@@ -226,7 +246,9 @@ public class InventoryController {
     }
 
 	public int deleteProduct(ProductModel toDelete) {
-		// TODO Auto-generated method stub
+		myDB.deleteProduct(toDelete);
+		ProductList.remove(toDelete);
+		//updateInvObservers(toDelete, 1);
 		return 0;
 	} 
     public PartModel getPart(int pid){

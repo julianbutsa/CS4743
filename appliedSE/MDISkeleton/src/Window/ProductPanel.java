@@ -124,9 +124,9 @@ public class ProductPanel extends ChildPanel implements ActionListener, MouseLis
 			case "delete":
 				if ( listTable.getSelectedRow() >= 0){
 					ProductModel toDelete = master.getController().getProductEntry(listTable.getSelectedRow());
-					//if(master.getController().deleteProduct(toDelete) == -1){
-					//	master.displayChildMessage("Quantity needs to be 0 before deletion");
-					//}
+					if(master.getController().deleteProduct(toDelete) == -1){
+						master.displayChildMessage("Quantity needs to be 0 before deletion");
+					}
 				}
 				break;
 			case "edit":

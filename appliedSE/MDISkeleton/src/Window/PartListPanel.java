@@ -125,9 +125,9 @@ public class PartListPanel extends ChildPanel implements MouseListener, ActionLi
 				break;
 			case "delete":
 				if ( listTable.getSelectedRow() >= 0){
-					if(master.getController().deletePart(listTable.getSelectedRow()) == -1){
+					/*if(master.getController().deletePart(listTable.getSelectedRow()) == -1){
 							master.displayChildMessage("Failed to delete.\n Inventory entries remain");
-						}
+					}*/
 				}
 				break;
 			case "edit":

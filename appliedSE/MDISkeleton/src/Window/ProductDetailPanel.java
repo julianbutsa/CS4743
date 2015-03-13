@@ -69,8 +69,11 @@ public class ProductDetailPanel extends ChildPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+		switch(e.getActionCommand()){
+			case "add":
+				
+				break;
+			}
+		}
 
 }
