@@ -302,6 +302,7 @@ public class DBQuery {
 			e.printStackTrace();
 		}		
 	}
+
 	
 	public ArrayList<ProductModel> getProducts(){
 		ArrayList<ProductModel> returnList = null;

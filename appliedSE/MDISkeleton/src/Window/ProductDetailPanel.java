@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import Model.PartModel;
 import Model.ProductModel;
 
 public class ProductDetailPanel extends ChildPanel implements ActionListener {
@@ -66,12 +67,39 @@ public class ProductDetailPanel extends ChildPanel implements ActionListener {
 
 		// TODO Auto-generated constructor stub
 	}
+	
+	public void updatePanel(){
+		this.ProductNumberField.setText(product.getprodNum());
+		this.DescriptionField.setText(product.getDesc());
+
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()){
 			case "add":
-				
+				String pnum = ProductNumberField.getText();
+				String desc = DescriptionField.getText();
+				if(product.editModel(pnum, desc) != -1){
+					if(master.getController().addProduct(product)==-1){
+						master.displayChildMessage("Invalid values");
+					}
+				}else{
+					master.displayChildMessage("Invalid values");
+				}
+				this.product = new ProductModel();
+				this.updatePanel();
+				break;
+			case "delete":
+				break;
+			case "update":
+				String pnum1 = ProductNumberField.getText();
+				String desc1 = DescriptionField.getText();
+				if(product.editModel(pnum1, desc1) == -1){
+					master.displayChildMessage("Invalid values");
+				}else{
+					master.getController().updateProduct(product);
+				}
 				break;
 			}
 		}

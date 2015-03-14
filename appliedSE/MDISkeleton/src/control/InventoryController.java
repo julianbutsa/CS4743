@@ -265,6 +265,11 @@ public class InventoryController {
 		updatePartObservers(model, 1);
 	}
 	
+	public void updateProduct(ProductModel model){
+		//myDB.updateProduct(model);
+		//updateProductObservers(model, 1);
+	}
+	
 	
 	public void updateInventory(ItemModel model){
 		//System.out.println("updating inventory");
