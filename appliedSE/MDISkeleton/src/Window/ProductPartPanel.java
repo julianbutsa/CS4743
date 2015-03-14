@@ -13,34 +13,38 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
+
+
+
+
+
 import DBclass.DBQuery;
 import Model.ItemModel;
 import Model.ProductModel;
+import Model.ProductPartModel;
+import Model.PartModel;
 
-public class ProductPanel extends ChildPanel implements ActionListener, MouseListener{
-
+public class ProductPartPanel extends ChildPanel implements ActionListener, MouseListener{
 
 	private JScrollPane scrollPane;
 	private JTable listTable;
 	private JButton addButton;
 	private JButton deleteButton;
 	private JButton editButton;
-	private JButton detailButton;
 	
-	public DBQuery myDB;
-	public ArrayList<ProductModel> products;
+	public ProductModel m;
+	public ArrayList<ProductPartModel> parts;
 	
-	
-	public ProductPanel(win m, ArrayList<ProductModel> p ) {
+	public ProductPartPanel(win m, ProductModel model ){
 		super(m);
-		//master.getController().registerInvObserver(this);
 		this.myTitle = "Products";
 
 		//TODO figure out how to set the location of a child panel
 		//this.setLocation(master.getWidth()/2, 0);
 		
 		//get list
-		this.products = p;
+		this.m = model;
+		this.parts = model.getParts();
 		
 		// TODO Auto-generated constructor stub
 		
@@ -54,50 +58,42 @@ public class ProductPanel extends ChildPanel implements ActionListener, MouseLis
 
 				
 				//make menu
-				addButton = new JButton("Add Entry");
+				addButton = new JButton("Add Part");
 				addButton.setActionCommand("add");
 				addButton.addActionListener(this);
 				contentPanel.add(addButton);
 				
-				deleteButton = new JButton("Delete Entry");
+				deleteButton = new JButton("Delete Part");
 				deleteButton.setActionCommand("delete");
 				deleteButton.addActionListener(this);
 				deleteButton.setEnabled(false);
 				contentPanel.add(deleteButton);
 				
-				editButton = new JButton("Edit Entry");
+				editButton = new JButton("Edit Part");
 				editButton.setActionCommand("edit");
 				editButton.addActionListener(this);
 				editButton.setEnabled(false);
 				contentPanel.add(editButton);
 				
-				detailButton = new JButton("Detail Entry");
-				detailButton.setActionCommand("detail");
-				detailButton.addActionListener(this);
-				detailButton.setEnabled(false);
-				contentPanel.add(detailButton);
-				
 				contentPanel.add(scrollPane);
-				
-
 	}
-	
 	
 	private void makeTable(){
 		
-		java.util.Iterator<ProductModel> i = products.iterator();
+		java.util.Iterator<ProductPartModel> i = parts.iterator();
 		
-		Object[][] data = new String[products.size()][1];
+		Object[][] data = new String[parts.size()][2];
 		
 		int index = 0;
 		while(i.hasNext()){
-			ProductModel temp = i.next();
-			data[index][0] = temp.getprodNum();
+			ProductPartModel temp = i.next();
+			data[index][0] = temp.getPartId();
+			data[index][1] = temp.getQuantity();
 			
 			index++;
 		}
 		
-		String[] columnNames = {"Product ID"};
+		String[] columnNames = {"Part ID", "Quantity"};
 		
 		if(this.listTable != null){
 			this.listTable.setVisible(false);
@@ -115,55 +111,39 @@ public class ProductPanel extends ChildPanel implements ActionListener, MouseLis
 		this.scrollPane.setViewportView(this.listTable);
 		
 	}
-
-
-	@Override
+	
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
 		switch(e.getActionCommand()){
 			case "add":
-				ProductModel i = new ProductModel();
-				ProductDetailPanel ipan = new ProductDetailPanel(master, i, 0);
+				ProductPartModel i = new ProductPartModel();
+				ProductPartDetailPanel ipan = new ProductPartDetailPanel(master, i,m, 0);
 				master.openMDIChild(ipan);
 				break;
-				
-			case "delete":
-				if ( listTable.getSelectedRow() >= 0){
-					ProductModel toDelete = master.getController().getProductEntry(listTable.getSelectedRow());
-					if(master.getController().deleteProduct(toDelete) == -1){
-						master.displayChildMessage("Quantity needs to be 0 before deletion");
-					}
-				}
-				break;
-			case "edit":
-				if (listTable.getSelectedRow() >= 0 ){
-					ProductModel i2 = master.getController().getProductEntry(listTable.getSelectedRow());
-					ProductDetailPanel ipan2 = new ProductDetailPanel(master, i2, 1);
-					master.openMDIChild(ipan2);
-				}
-			case "detail":
-				if (listTable.getSelectedRow() >= 0 ){
-					ProductModel i3 = master.getController().getProductEntry(listTable.getSelectedRow());
-					ProductPartPanel ipan3 = new ProductPartPanel(master, i3);
-					master.openMDIChild(ipan3);
-				}
+			
+		case "delete":
+			if ( listTable.getSelectedRow() >= 0){
+				ProductPartModel toDelete = m.getPartEntry(listTable.getSelectedRow());
+				m.deletePart(toDelete);	
+			}
+			break;
+		case "edit":
+			if (listTable.getSelectedRow() >= 0 ){
+				ProductPartModel i2 = new ProductPartModel();
+				ProductPartDetailPanel ipan2 = new ProductPartDetailPanel(master, i2,m, 1);
+				master.openMDIChild(ipan2);
+			}
+			break;
 		}
-		
 	}
-
-
-	@Override
+	
 	public void mouseClicked(MouseEvent e) {
 		if(listTable.getSelectedRow() >= 0){
 			deleteButton.setEnabled(true);
 			editButton.setEnabled(true);
-			detailButton.setEnabled(true);
 		}
 		else{
 			deleteButton.setEnabled(false);
 			editButton.setEnabled(false);
-			detailButton.setEnabled(false);
 		}
 		if(e.getClickCount() == 2){
 			this.actionPerformed(new ActionEvent(this, 1, "edit"));
@@ -204,5 +184,4 @@ public class ProductPanel extends ChildPanel implements ActionListener, MouseLis
 		// TODO Auto-generated method stub
 	
 	}
-
 }

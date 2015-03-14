@@ -44,12 +44,24 @@ public class ProductModel {
 		return this.partdesc;
 	}
 	
-	public void AddPart(ProductPartModel p){
+	public int addPart(ProductPartModel p){
 		Composition.add(p);
+		return 0;
 	}
 	
-	public void DeletePart(ProductPartModel p){
-		Composition.remove(p);
+
+	
+	public ArrayList<ProductPartModel> getParts(){
+		return Composition;
+	}
+	
+	public ProductPartModel getPartEntry(int i){
+		return Composition.get(i);
+	}
+	
+	public int deletePart(ProductPartModel m){
+		Composition.remove(m);
+		return 0;
 	}
 	
 }

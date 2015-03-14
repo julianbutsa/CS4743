@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Observer;
 
 import DBclass.DBQuery;
-import Model.ItemModel;
-import Model.PartModel;
-import Model.ProductModel;
+import Model.*;
 
 public class InventoryController {
 	//private ArrayList<PartModelObserver> observer = new ArrayList<PartModelObserver>();
@@ -211,6 +209,15 @@ public class InventoryController {
     			System.out.println("Cannot delete part associated with Item");
     			return -1;
     		}
+    	for(int i = 0; i < ProductList.size(); i++){
+    		ArrayList<ProductPartModel> temp = ProductList.get(i).getParts();
+    		for(int l = 0; l < temp.size(); l++){
+    			if(temp.get(l).getPartId() == m.getId()){
+    				System.out.println("Cannot delete part associated with Product");
+        			return -1;
+    			}
+    		}
+    	}
     	Inventory.remove(m);
     	
     	myDB.deletePart(m);
@@ -226,6 +233,15 @@ public class InventoryController {
     		if(ItemInventory.get(i).getPart() == p){
     			System.out.println("Cannot delete part associated with Item");
     			return -1;
+    		}
+    	}
+    	for(int i = 0; i < ProductList.size(); i++){
+    		ArrayList<ProductPartModel> temp = ProductList.get(i).getParts();
+    		for(int l = 0; l < temp.size(); l++){
+    			if(temp.get(l).getPartId() == p.getId()){
+    				System.out.println("Cannot delete part associated with Product");
+        			return -1;
+    			}
     		}
     	}
     	updatePartObservers(p, 0);
