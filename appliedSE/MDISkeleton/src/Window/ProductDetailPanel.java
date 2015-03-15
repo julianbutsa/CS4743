@@ -85,7 +85,7 @@ public class ProductDetailPanel extends ChildPanel implements ActionListener {
 						master.displayChildMessage("Invalid values");
 					}
 				}else{
-					master.displayChildMessage("Invalid values");
+					master.displayChildMessage("Must Start With A");
 				}
 				this.product = new ProductModel();
 				this.updatePanel();

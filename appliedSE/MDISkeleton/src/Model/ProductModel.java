@@ -7,19 +7,21 @@ public class ProductModel {
 	String partdesc;
 	int id;
 	private ArrayList<ProductPartModel> Composition = new ArrayList<ProductPartModel>();
+	int version;
 	
 	public ProductModel(String desc, String num) {
 		prodno = num;
 		partdesc = desc;
-
+		version = 1;
 	}
 	
 	public ProductModel(){
 		prodno = "";
 		partdesc = "";
+		version = 1;
 	}
 	
-	public int editModel(String desc, String num){
+	public int editModel(String num, String desc){
 		if(num.startsWith("A")){
 			prodno = num;
 			partdesc = desc;
@@ -62,6 +64,18 @@ public class ProductModel {
 	public int deletePart(ProductPartModel m){
 		Composition.remove(m);
 		return 0;
+	}
+	
+	public void VersionIncrease(){
+		version++;
+	}
+	
+	public int getVersion(){
+		return version;
+	}
+	
+	public void setVersion(int a){
+		version = a;
 	}
 	
 }

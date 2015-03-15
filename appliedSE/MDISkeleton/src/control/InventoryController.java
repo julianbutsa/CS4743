@@ -12,10 +12,14 @@ public class InventoryController {
 	private ArrayList<PartModel> Inventory;// = new ArrayList<PartModel>();
 	private ArrayList<ItemModel> ItemInventory;// = new ArrayList<ItemModel>();
 	private ArrayList<ProductModel> ProductList;// = new ArrayList<ProductModel>();
+	private ArrayList<ProductPartModel> ProductPartList;
 	
 	private ArrayList<PartObserver> partObservers;
 	private ArrayList<InventoryObserver> invObservers;
 	
+	int partno;
+	int itemno;
+	int productno;
 	
 	
 	public DBQuery myDB;
@@ -27,12 +31,29 @@ public class InventoryController {
 		this.Inventory = myDB.getParts();
 		this.ItemInventory = myDB.getInventory();
 		this.ProductList = myDB.getProducts();
+		this.ProductPartList = myDB.getProductParts();
+		allocateProductParts();
 		this.partObservers = new ArrayList<PartObserver>();
 		this.invObservers = new ArrayList<InventoryObserver>();
+		partno = Inventory.size();
+		itemno = ItemInventory.size();
+		productno = ProductList.size();
 	}
 	
 	
-
+	public void allocateProductParts(){
+		System.out.println(ProductList.size() +","+ ProductPartList.size());
+		for(int i = 0; i < ProductList.size(); i++){
+			for(int l = 0; l < ProductPartList.size(); l++){
+				System.out.println("Run");
+				System.out.println(ProductPartList.get(l).getProductId() +", " +ProductList.get(i).getId());
+				if(ProductPartList.get(l).getProductId() == ProductList.get(i).getId()){
+					ProductList.get(i).addPart(ProductPartList.get(l));
+					System.out.println("Hit");
+				}
+			}
+		}
+	}
 	
 
 	public ArrayList<PartModel> getInventory(){
@@ -74,6 +95,7 @@ public class InventoryController {
 			System.out.println("Part Number Taken");
 			return -1;
 		}
+		m.setId(++partno);
     	Inventory.add(m);
 		myDB.addPart(m);
 		
@@ -142,6 +164,7 @@ public class InventoryController {
     		return -1;
     	}
     	ItemModel item = new ItemModel(p, l, q);
+    	item.setId(++itemno);
     	ItemInventory.add(item);
     	myDB.addToInventory(item);
     	updateInvObservers(item, 0);
@@ -153,6 +176,7 @@ public class InventoryController {
     		System.out.println("Product Number taken");
     		return -1;
     	}
+    	p.setId(++productno);
     	ProductList.add(p);
     	myDB.addProduct(p);
     	//updateInvObservers(item, 0);
@@ -277,11 +301,21 @@ public class InventoryController {
 
 	public void updatePart(PartModel model) {
 		// TODO Auto-generated method stub
+		PartModel temp = myDB.getPart(model.getId());
+		if(temp.getVersion() != model.getVersion()){
+			System.out.println("Edit error, Versions out of Sync");
+		}
+		model.VersionIncrease();
 		myDB.updatePart(model);
 		updatePartObservers(model, 1);
 	}
 	
 	public void updateProduct(ProductModel model){
+		ProductModel temp = myDB.getProduct(model.getId());
+		if(temp.getVersion() != model.getVersion()){
+			System.out.println("Edit error, Versions out of Sync");
+		}
+		model.VersionIncrease();
 		//myDB.updateProduct(model);
 		//updateProductObservers(model, 1);
 	}
@@ -289,6 +323,12 @@ public class InventoryController {
 	
 	public void updateInventory(ItemModel model){
 		//System.out.println("updating inventory");
+		
+		ItemModel temp = myDB.getItem(model.getId());
+		if(temp.getVersion() != model.getVersion()){
+			System.out.println("Edit error, Versions out of Sync");
+		}
+		model.VersionIncrease();
 		myDB.updateInventory(model);
 		updateInvObservers(model, 1);
 	}

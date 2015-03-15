@@ -11,6 +11,7 @@ public class PartModel {
 	private int id;
 	private String external;
 	private String qunit;
+	private int version;
 
 	public PartModel(String name, String number, String v, String e , String u) {
 		partno = number;
@@ -21,6 +22,7 @@ public class PartModel {
 			external = e;
 		id = 0;
 		this.qunit = u;
+		version = 1;
 	}
 	
 	public PartModel(String name, String number, String v, String e) {
@@ -32,6 +34,7 @@ public class PartModel {
 			external = e;
 		id = 0;
 		this.qunit = "Unknown";
+		version = 1;
 	}
 
 	
@@ -163,7 +166,18 @@ public class PartModel {
 		s = s+"qunit : " + qunit + "\n";
 		return  s;
 	}
+	
+	public void VersionIncrease(){
+		version++;
+	}
+	
+	public int getVersion(){
+		return version;
+	}
     
+	public void setVersion(int a){
+		version = a;
+	}
     
 	
 }

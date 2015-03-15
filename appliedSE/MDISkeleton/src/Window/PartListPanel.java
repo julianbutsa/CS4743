@@ -22,6 +22,7 @@ public class PartListPanel extends ChildPanel implements MouseListener, ActionLi
 	private JButton addButton;
 	private JButton deleteButton;
 	private JButton editButton;
+	private JButton updateButton;
 	
 	public ArrayList<PartModel> partList;
 	
@@ -63,6 +64,11 @@ public class PartListPanel extends ChildPanel implements MouseListener, ActionLi
 				editButton.addActionListener(this);
 				editButton.setEnabled(false);
 				contentPanel.add(editButton);
+				
+				updateButton = new JButton("Update List");
+				updateButton.setActionCommand("update");
+				updateButton.addActionListener(this);
+				contentPanel.add(updateButton);
 				
 				contentPanel.add(scrollPane);
 	}
@@ -125,9 +131,9 @@ public class PartListPanel extends ChildPanel implements MouseListener, ActionLi
 				break;
 			case "delete":
 				if ( listTable.getSelectedRow() >= 0){
-					/*if(master.getController().deletePart(listTable.getSelectedRow()) == -1){
+					if(master.getController().deletePart(listTable.getSelectedRow()) == -1){
 							master.displayChildMessage("Failed to delete.\n Inventory entries remain");
-					}*/
+					}
 				}
 				break;
 			case "edit":
@@ -137,6 +143,9 @@ public class PartListPanel extends ChildPanel implements MouseListener, ActionLi
 					//itemPanel editframe = new itemPanel(itemPanel.EDIT_MODE, listTable.getSelectedRow(), myHandler);
 
 				}
+				break;
+			case "update":
+				this.revalidate();
 		}
 		
 	}

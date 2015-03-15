@@ -134,6 +134,7 @@ public class PartDetailPanel extends ChildPanel implements ActionListener, PartO
 				}
 				this.thisPart = new PartModel();
 				this.updatePanel();
+				master.revalidate();
 				break;
 		}
 	}

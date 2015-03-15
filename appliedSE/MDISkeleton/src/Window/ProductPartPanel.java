@@ -87,8 +87,8 @@ public class ProductPartPanel extends ChildPanel implements ActionListener, Mous
 		int index = 0;
 		while(i.hasNext()){
 			ProductPartModel temp = i.next();
-			data[index][0] = temp.getPartId();
-			data[index][1] = temp.getQuantity();
+			data[index][0] = String.valueOf(temp.getPartId());
+			data[index][1] = String.valueOf(temp.getQuantity());
 			
 			index++;
 		}

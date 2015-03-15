@@ -66,6 +66,7 @@ public class DBQuery {
 				PartModel temp = new PartModel( rs.getString("pname"), rs.getString("pnum"), 
 												rs.getString("vendor"), rs.getString("pnumext"),rs.getString("unit"));
 				temp.setId(rs.getInt("pid"));
+				temp.setVersion(rs.getInt("version"));
 				returnList.add(temp);
 			}	
 			//close that stuff in case it got opened.
@@ -89,6 +90,7 @@ public class DBQuery {
 				PartModel tpart = this.getPart(rs.getInt("pid"));
 				ItemModel m = new ItemModel(tpart, rs.getString("lname"), rs.getInt("qty"));
 				m.setId(rs.getInt("invid"));
+				m.setVersion(rs.getInt("version"));
 				returnList.add(m);
 			}
 			//close that stuff in case it got opened.
@@ -132,6 +134,7 @@ public class DBQuery {
 				p = new PartModel(r.getString("pname"), r.getString("pnum"), 
 						r.getString("vendor"), r.getString("pnumext"), r.getString("unit"));
 				p.setId(r.getInt("pid"));
+				p.setVersion(r.getInt("version"));
 			}
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -139,8 +142,40 @@ public class DBQuery {
 		return p;
 	}
 	
-	public ItemModel getItem(){
-		return null;
+	public ProductModel getProduct(int pid){
+		String query = "select * from product where id = " + pid;
+		ProductModel p = null;
+		try{
+			Statement s = myConnection.createStatement();
+			ResultSet r = s.executeQuery(query);
+			if(r.next()){
+				p = new ProductModel(r.getString("productno"), r.getString("description"));
+				p.setId(r.getInt("id"));
+				p.setVersion(r.getInt("version"));
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return p;
+	}
+	
+	public ItemModel getItem(int id){
+		ItemModel p = null;
+		String query = "select * from inventory where invid = " + id + " join location on (inventory.lid = location.lid)";
+		try {
+			Statement s = myConnection.createStatement();
+			ResultSet rs = s.executeQuery(query);
+			//take everything from the resultSet and put it in a model class
+			while(rs.next()){
+				PartModel tpart = this.getPart(rs.getInt("pid"));
+				p = new ItemModel(tpart, rs.getString("lname"), rs.getInt("qty"));
+				p.setId(rs.getInt("invid"));
+				p.setVersion(rs.getInt("version"));
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return p;
 	}
 	
 	public int getLocationId(String l){
@@ -163,8 +198,8 @@ public class DBQuery {
 	public void addPart(PartModel p){
 		
 		//insert into part table
-		String query = "insert into part (pname, pnum, pnumext, unit, vendor) "
-				+ "values (\""+p.getPname()+"\", "+p.getPnum()+", "+p.getExternal()+",\""+p.getQunit()+"\",\""+p.getVendor()+"\")";
+		String query = "insert into part (pid, pname, pnum, pnumext, unit, vendor, version) "
+				+ "values (\""+p.getId()+"\",\""+p.getPname()+"\", \""+p.getPnum()+"\", "+p.getExternal()+",\""+p.getQunit()+"\",\""+p.getVendor()+"\", \"1\")";
 		System.out.println(query);
 		try{
 			Statement s = myConnection.createStatement();
@@ -293,6 +328,7 @@ public class DBQuery {
 			query += "unit= \"" + p.getQunit() +"\"";
 		}
 		
+		query += "version= \"" + p.getVersion() +"\"";
 		query +=" where pid = " +p.getId();
 		//System.out.println(query);
 		try{
@@ -315,6 +351,30 @@ public class DBQuery {
 			while(rs.next()){
 				ProductModel temp = new ProductModel(  rs.getString("description"), rs.getString("productno"));
 				temp.setId(rs.getInt("id"));
+				temp.setVersion(rs.getInt("version"));
+				returnList.add(temp);
+			}	
+			//close that stuff in case it got opened.
+			rs.close();
+			s.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 		
+		return returnList;
+	}
+	
+	public ArrayList<ProductPartModel> getProductParts(){
+		ArrayList<ProductPartModel> returnList = null;
+		String query = "select * from ProductPart";
+		try {
+			Statement s = myConnection.createStatement();
+			ResultSet rs = s.executeQuery(query);
+			returnList = new ArrayList<ProductPartModel>();
+			//take everything from the resultSet and put it in a model class
+			while(rs.next()){
+				ProductPartModel temp = new ProductPartModel(rs.getInt("productid"), rs.getInt("partid"), rs.getInt("quantity"));
+				temp.setVersion(rs.getInt("version"));
 				returnList.add(temp);
 			}	
 			//close that stuff in case it got opened.
@@ -331,8 +391,8 @@ public class DBQuery {
 		int pid = i.getId();
 		String no = i.getprodNum();
 		String desc = i.getDesc();
-		String query = "insert into product (id, productno, description) "
-				+ "values (\""+pid+"\", "+ no +", "+desc+")";
+		String query = "insert into product (id, productno, description, version) "
+				+ "values (\""+pid+"\", \""+ no +"\", \""+desc+"\", 1)";
 		try{
 			Statement s = myConnection.createStatement();
 			int iid = s.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
@@ -365,7 +425,7 @@ public class DBQuery {
 		}
 		*/
 		System.out.println(i.getLocation() );
-		String query =  "update ignore inventory set pid = "+i.getPart().getId()+", lid ="+this.getLocationId(i.getLocation()) +", qty = " + i.getQuantity() +" where invid ="+ i.getId();
+		String query =  "update ignore inventory set pid = "+i.getPart().getId()+", lid ="+this.getLocationId(i.getLocation()) +", qty = " + i.getQuantity() +", version = " + i.getVersion() +" where invid ="+ i.getId();
 		try{
 			Statement s = myConnection.createStatement();
 			s.executeUpdate(query);			

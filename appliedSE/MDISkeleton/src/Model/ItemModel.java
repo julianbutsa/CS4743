@@ -7,6 +7,7 @@ public class ItemModel {
 	PartModel part;
 	String location;
 	int quantity;
+	int version;
 	
 	public ItemModel(PartModel p, String l, int q) {
 		part = p;
@@ -18,6 +19,7 @@ public class ItemModel {
 		}
 		quantity = q;
 		id = 0;
+		version = 1;
 	}
 	
 	public ItemModel() {
@@ -26,6 +28,7 @@ public class ItemModel {
 		this.part = new PartModel();
 		this.location = "";
 		this.quantity = 0;
+		version = 1;
 	}
 
 	public int editModel(String num, String l, int q, InventoryController iv){
@@ -84,5 +87,17 @@ public class ItemModel {
 		s += "quantity:" + quantity + "\n";
 		s += "Part:\n" + part.toString();
 		return s;
+	}
+	
+	public void VersionIncrease(){
+		version++;
+	}
+	
+	public int getVersion(){
+		return version;
+	}
+	
+	public void setVersion(int a){
+		version = a;
 	}
 }
