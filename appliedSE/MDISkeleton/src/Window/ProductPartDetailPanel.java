@@ -4,10 +4,12 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.JComboBox;
 
 import Model.*;
 
@@ -19,8 +21,9 @@ public class ProductPartDetailPanel extends ChildPanel implements ActionListener
 	private JLabel PartID;
 	private JLabel Quantity;
 	private JLabel ProductIDField;
+	private String[] input;
 	
-	private JTextField PartIDField;
+	private JComboBox PartIDField;
 	private JTextField QuantityField;
 	
 	private JButton updateButton;
@@ -36,8 +39,14 @@ public class ProductPartDetailPanel extends ChildPanel implements ActionListener
 		this.PartID = new JLabel("Part Id");
 		this.Quantity = new JLabel("Quantity");
 		
+		ArrayList<PartModel> parts = master.getController().getInventory();
+		input = new String[parts.size()];
+		for(int j = 0 ; j < parts.size(); j++){
+			input[j] = String.valueOf(parts.get(j).getId());
+		}
+		
 		this.ProductIDField = new JLabel(String.valueOf(part.getProductId()));
-		this.PartIDField = new JTextField(part.getPartId());
+		this.PartIDField = new JComboBox(input);
 		this.QuantityField = new JTextField(part.getQuantity());
 		
 		contentPanel.add(ProductID);
@@ -69,7 +78,7 @@ public class ProductPartDetailPanel extends ChildPanel implements ActionListener
 	}
 	
 	public void updatePanel(){
-		this.PartIDField.setText(String.valueOf(part.getPartId()));
+		
 		this.QuantityField.setText(String.valueOf(part.getQuantity()));
 
 	}
@@ -77,7 +86,7 @@ public class ProductPartDetailPanel extends ChildPanel implements ActionListener
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()){
 			case "add":
-				Integer pid = Integer.parseInt(PartIDField.getText());
+				Integer pid = Integer.parseInt(PartIDField.getSelectedItem().toString());
 				Integer q = Integer.parseInt(QuantityField.getText());
 				if(part.editModel(product.getId(),pid, q) != -1){
 					if(product.addPart(part)==-1){
@@ -93,7 +102,7 @@ public class ProductPartDetailPanel extends ChildPanel implements ActionListener
 				product.deletePart(part);	
 				break;
 			case "update":
-				Integer pid2 = Integer.parseInt(PartIDField.getText());
+				Integer pid2 = Integer.parseInt(PartIDField.getSelectedItem().toString());
 				Integer q2 = Integer.parseInt(QuantityField.getText());
 				if(part.editModel(product.getId(),pid2, q2) == -1){
 					master.displayChildMessage("Invalid values");

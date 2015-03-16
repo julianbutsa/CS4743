@@ -87,17 +87,17 @@ public class ProductPanel extends ChildPanel implements ActionListener, MouseLis
 		
 		java.util.Iterator<ProductModel> i = products.iterator();
 		
-		Object[][] data = new String[products.size()][1];
+		Object[][] data = new String[products.size()][2];
 		
 		int index = 0;
 		while(i.hasNext()){
 			ProductModel temp = i.next();
 			data[index][0] = temp.getprodNum();
-			
+			data[index][1] = String.valueOf(temp.getId());
 			index++;
 		}
 		
-		String[] columnNames = {"Product ID"};
+		String[] columnNames = {"Product Num", "Product Id"};
 		
 		if(this.listTable != null){
 			this.listTable.setVisible(false);

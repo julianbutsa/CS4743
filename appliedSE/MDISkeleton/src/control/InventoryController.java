@@ -42,14 +42,10 @@ public class InventoryController {
 	
 	
 	public void allocateProductParts(){
-		System.out.println(ProductList.size() +","+ ProductPartList.size());
 		for(int i = 0; i < ProductList.size(); i++){
 			for(int l = 0; l < ProductPartList.size(); l++){
-				System.out.println("Run");
-				System.out.println(ProductPartList.get(l).getProductId() +", " +ProductList.get(i).getId());
 				if(ProductPartList.get(l).getProductId() == ProductList.get(i).getId()){
 					ProductList.get(i).addPart(ProductPartList.get(l));
-					System.out.println("Hit");
 				}
 			}
 		}
