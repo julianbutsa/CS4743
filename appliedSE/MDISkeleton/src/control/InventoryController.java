@@ -325,30 +325,30 @@ public class InventoryController {
 
 	public void updatePart(PartModel model) {
 		// TODO Auto-generated method stub
-		/*PartModel temp = myDB.getPart(model.getId());
+		PartModel temp = myDB.getPart(model.getId());
 		if(temp.getVersion() != model.getVersion()){
 			System.out.println("Edit error, Versions out of Sync");
-		}*/
+		}
 		model.VersionIncrease();
 		myDB.updatePart(model);
 		updatePartObservers(model, 1);
 	}
 	
 	public void updateProduct(ProductModel model){
-		/*ProductModel temp = myDB.getProduct(model.getId());
+		ProductModel temp = myDB.getProduct(model.getId());
 		if(temp.getVersion() != model.getVersion()){
 			System.out.println("Edit error, Versions out of Sync");
-		}*/
+		}
 		model.VersionIncrease();
 		myDB.updateProduct(model);
 		//updateProductObservers(model, 1);
 	}
 	
 	public void updateProductPart(ProductPartModel model){
-		/*ProductModel temp = myDB.getProduct(model.getId());
+		ProductPartModel temp = myDB.getProductPart(model.getProductId(), model.getPartId());
 		if(temp.getVersion() != model.getVersion()){
 			System.out.println("Edit error, Versions out of Sync");
-		}*/
+		}
 		model.VersionIncrease();
 		myDB.updateProductPart(model);
 		//updateProductObservers(model, 1);
@@ -358,10 +358,10 @@ public class InventoryController {
 	public void updateInventory(ItemModel model){
 		//System.out.println("updating inventory");
 		
-		/*ItemModel temp = myDB.getItem(model.getId());
+		ItemModel temp = myDB.getItem(model.getId());
 		if(temp.getVersion() != model.getVersion()){
 			System.out.println("Edit error, Versions out of Sync");
-		}*/
+		}
 		model.VersionIncrease();
 		myDB.updateInventory(model);
 		updateInvObservers(model, 1);

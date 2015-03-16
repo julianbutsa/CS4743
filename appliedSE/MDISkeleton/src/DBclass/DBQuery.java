@@ -159,16 +159,32 @@ public class DBQuery {
 		return p;
 	}
 	
+	public ProductPartModel getProductPart(int productid, int partid){
+		String query = "select * from ProductPart where partid = " + partid + " and productid = " +productid;
+		ProductPartModel p = null;
+		try{
+			Statement s = myConnection.createStatement();
+			ResultSet r = s.executeQuery(query);
+			if(r.next()){
+				p = new ProductPartModel(r.getInt("productid"), r.getInt("partid"), r.getInt("quantity"));
+				p.setVersion(r.getInt("version"));
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return p;
+	}
+	
 	public ItemModel getItem(int id){
 		ItemModel p = null;
-		String query = "select * from inventory where invid = " + id + " join location on (inventory.lid = location.lid)";
+		String query = "select * from inventory where invid = " + id;
 		try {
 			Statement s = myConnection.createStatement();
 			ResultSet rs = s.executeQuery(query);
 			//take everything from the resultSet and put it in a model class
 			while(rs.next()){
 				PartModel tpart = this.getPart(rs.getInt("pid"));
-				p = new ItemModel(tpart, rs.getString("lname"), rs.getInt("qty"));
+				p = new ItemModel(tpart, getLocation(rs.getInt("lid")), rs.getInt("qty"));
 				p.setId(rs.getInt("invid"));
 				p.setVersion(rs.getInt("version"));
 			}
@@ -176,6 +192,22 @@ public class DBQuery {
 			e.printStackTrace();
 		}
 		return p;
+	}
+	
+	public String getLocation(int lid){
+		String ret = "Unknown";
+		String query = "select lname from location where lid = "+lid;
+		try{
+			Statement s = myConnection.createStatement();
+			ResultSet r =  s.executeQuery(query);
+			if(r.next()){
+				ret = r.getString("lname");
+			}
+			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return ret;
 	}
 	
 	public int getLocationId(String l){
