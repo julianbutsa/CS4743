@@ -42,7 +42,7 @@ public class PartDetailPanel extends ChildPanel implements ActionListener, PartO
 		
 		//set up JLabels
 		this.PartName = new JLabel("Part Name");
-		this.PartId = new JLabel("Part ID");
+		this.PartId = new JLabel("Part Num");
 		this.ExternalId = new JLabel("Ext.Id");
 		this.Vendor = new JLabel("Vendor");
 		this.Unit = new JLabel("Unit");
@@ -118,6 +118,9 @@ public class PartDetailPanel extends ChildPanel implements ActionListener, PartO
 				}
 				break;
 			case("delete"):
+				if(master.getController().deletePart(thisPart) == -1){
+					master.displayChildMessage("Failed to delete.\n Inventory entries remain");
+				}
 				break;
 			case("add"):
 				String aname = nameField.getText();

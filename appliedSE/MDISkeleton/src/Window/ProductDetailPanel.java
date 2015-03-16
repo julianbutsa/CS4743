@@ -106,6 +106,9 @@ public class ProductDetailPanel extends ChildPanel implements ActionListener, Pr
 				this.updatePanel();
 				break;
 			case("delete"):
+				if(master.getController().deleteProduct(product) == -1){
+					master.displayChildMessage("Quantity needs to be 0 before deletion");
+				}
 				break;
 			}
 		}

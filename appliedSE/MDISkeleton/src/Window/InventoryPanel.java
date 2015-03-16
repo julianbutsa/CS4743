@@ -93,7 +93,7 @@ public class InventoryPanel extends ChildPanel implements ActionListener , Mouse
 			index++;
 		}
 		
-		String[] columnNames = {"Part ID",
+		String[] columnNames = {"Part Num",
 								"Part Name",
 								"Location",
 								"Quantity",

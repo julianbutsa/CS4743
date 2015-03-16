@@ -40,7 +40,7 @@ public class InventoryDetailPanel extends ChildPanel implements ActionListener, 
 		contentPanel.setLayout(new GridLayout(5,2));
 		this.setPreferredSize(new Dimension(300,100));
 		this.item = i;
-		this.PartId = new JLabel("Part ID");
+		this.PartId = new JLabel("Part Num");
 		this.PartName = new JLabel("Part Name");
 		this.Location = new JLabel("Location");
 		this.Quantity = new JLabel("Quantity");

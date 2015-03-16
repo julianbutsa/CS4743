@@ -123,7 +123,8 @@ public class ProductPartDetailPanel extends ChildPanel implements ActionListener
 				this.updatePanel();
 				break;
 			case("delete"):
-				//product.deletePart(part);	
+				product.deletePart(part);	
+				master.getController().deleteProductPart(part);
 				break;
 			case("update"):
 				Integer pid2 = Integer.parseInt(PartIDField.getSelectedItem().toString());

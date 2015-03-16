@@ -447,6 +447,17 @@ public class DBQuery {
 		
 	}
 	
+	public void deleteProductPart(ProductPartModel p){
+		String query = "delete from ProductPart where partid = "+p.getPartId() +" and productid = " +p.getProductId();
+		try{
+			Statement s = myConnection.createStatement();
+			s.executeUpdate(query);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public void deleteProduct(ProductModel p){
 		String query = "delete from product where id = "+p.getId();
 		try{

@@ -32,7 +32,7 @@ public class ProductPartPanel extends ChildPanel implements ActionListener, Mous
 	private JButton deleteButton;
 	private JButton editButton;
 	
-	public ProductModel m;
+	public ProductModel mod;
 	public ArrayList<ProductPartModel> parts;
 	
 	public ProductPartPanel(win m, ProductModel model ){
@@ -43,7 +43,7 @@ public class ProductPartPanel extends ChildPanel implements ActionListener, Mous
 		//this.setLocation(master.getWidth()/2, 0);
 		
 		//get list
-		this.m = model;
+		this.mod = model;
 		this.parts = model.getParts();
 		
 		// TODO Auto-generated constructor stub
@@ -116,21 +116,22 @@ public class ProductPartPanel extends ChildPanel implements ActionListener, Mous
 		switch(e.getActionCommand()){
 			case "add":
 				ProductPartModel i = new ProductPartModel();
-				i.setProductId(m.getId());
-				ProductPartDetailPanel ipan = new ProductPartDetailPanel(master, i,m, 0);
+				i.setProductId(mod.getId());
+				ProductPartDetailPanel ipan = new ProductPartDetailPanel(master, i,mod, 0);
 				master.openMDIChild(ipan);
 				break;
 			
 		case "delete":
 			if ( listTable.getSelectedRow() >= 0){
-				ProductPartModel toDelete = m.getPartEntry(listTable.getSelectedRow());
-				m.deletePart(toDelete);	
+				ProductPartModel toDelete = mod.getPartEntry(listTable.getSelectedRow());
+				mod.deletePart(toDelete);	
+				master.getController().deleteProductPart(toDelete);
 			}
 			break;
 		case "edit":
 			if (listTable.getSelectedRow() >= 0 ){
-				ProductPartModel i2 = m.getPartEntry(listTable.getSelectedRow());
-				ProductPartDetailPanel ipan2 = new ProductPartDetailPanel(master, i2,m, 1);
+				ProductPartModel i2 = mod.getPartEntry(listTable.getSelectedRow());
+				ProductPartDetailPanel ipan2 = new ProductPartDetailPanel(master, i2,mod, 1);
 				master.openMDIChild(ipan2);
 			}
 			break;
@@ -188,7 +189,7 @@ public class ProductPartPanel extends ChildPanel implements ActionListener, Mous
 	
 	public void updateObserver(ProductModel p, int action) {
 		// TODO Auto-generated method stub
-		this.parts = m.getParts();
+		this.parts = mod.getParts();
 		makeTable();
 		this.scrollPane.repaint();
 		

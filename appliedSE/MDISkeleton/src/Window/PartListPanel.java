@@ -64,11 +64,7 @@ public class PartListPanel extends ChildPanel implements MouseListener, ActionLi
 				editButton.addActionListener(this);
 				editButton.setEnabled(false);
 				contentPanel.add(editButton);
-				
-				updateButton = new JButton("Update List");
-				updateButton.setActionCommand("update");
-				updateButton.addActionListener(this);
-				contentPanel.add(updateButton);
+		
 				
 				contentPanel.add(scrollPane);
 	}
@@ -94,7 +90,7 @@ public class PartListPanel extends ChildPanel implements MouseListener, ActionLi
 			index++;
 		}
 		
-		String[] columnNames = {	"Part ID",
+		String[] columnNames = {	"Part Num",
 									"External ID",
 									"Part Name",
 									"Vendor",
@@ -130,8 +126,10 @@ public class PartListPanel extends ChildPanel implements MouseListener, ActionLi
 				//itemPanel tempframe = new itemPanel(itemPanel.ADD_MODE, 0, myHandler);
 				break;
 			case "delete":
+				System.out.println("Hit");
 				if ( listTable.getSelectedRow() >= 0){
-					if(master.getController().deletePart(listTable.getSelectedRow()) == -1){
+					PartModel toDelete = master.getController().getPart(listTable.getSelectedRow());
+					if(master.getController().deletePart(toDelete) == -1){
 							master.displayChildMessage("Failed to delete.\n Inventory entries remain");
 					}
 				}
@@ -144,8 +142,6 @@ public class PartListPanel extends ChildPanel implements MouseListener, ActionLi
 
 				}
 				break;
-			case "update":
-				this.revalidate();
 		}
 		
 	}

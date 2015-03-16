@@ -179,7 +179,7 @@ public class InventoryController {
     	p.setId(++productno);
     	ProductList.add(p);
     	myDB.addProduct(p);
-    	//updateInvObservers(item, 0);
+    	updateProductObservers(p, 0);
     	return 0;
     }
     
@@ -188,9 +188,15 @@ public class InventoryController {
     		System.out.println("Quantity must be above 0");
     		return -1;
     	}
+    	for(int i = 0; i < ProductPartList.size(); i++){
+    		if(p.getProductId() == ProductPartList.get(i).getProductId() && p.getPartId() == ProductPartList.get(i).getPartId()){
+    			System.out.println("Product-Part combination not unique");
+        		return -1;
+    		}
+    	}
     	ProductPartList.add(p);
     	myDB.addProductPart(p);
-    	//updateInvObservers(item, 0);
+    	updateProductPartObservers(p, 0);
     	return 0;
     }
     
@@ -257,7 +263,7 @@ public class InventoryController {
     	
     	myDB.deletePart(m);
     	
-    	updatePartObservers(m, 0);
+    	updatePartObservers(m, 2);
     	return 0;
     }
     
@@ -279,7 +285,7 @@ public class InventoryController {
     			}
     		}
     	}
-    	updatePartObservers(p, 0);
+    	updatePartObservers(p, 2);
     	return 0;
     }
     
@@ -296,10 +302,17 @@ public class InventoryController {
     	return 0;
     }
 
+    public int deleteProductPart(ProductPartModel toDelete) {
+		myDB.deleteProductPart(toDelete);
+		ProductPartList.remove(toDelete);
+		updateProductPartObservers(toDelete, 1);
+		return 0;
+	} 
+    
 	public int deleteProduct(ProductModel toDelete) {
 		myDB.deleteProduct(toDelete);
 		ProductList.remove(toDelete);
-		//updateInvObservers(toDelete, 1);
+		updateProductObservers(toDelete, 1);
 		return 0;
 	} 
     public PartModel getPart(int pid){
