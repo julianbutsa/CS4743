@@ -11,8 +11,9 @@ import javax.swing.JTextField;
 
 import Model.PartModel;
 import Model.ProductModel;
+import control.ProductObserver;
 
-public class ProductDetailPanel extends ChildPanel implements ActionListener {
+public class ProductDetailPanel extends ChildPanel implements ActionListener, ProductObserver{
 
 	private ProductModel product;
 	private JLabel ProductNumber;
@@ -23,11 +24,13 @@ public class ProductDetailPanel extends ChildPanel implements ActionListener {
 	
 	private JButton updateButton;
 	private JButton deleteButton;
+	private JButton addButton;
 	
 	public ProductDetailPanel(win m, ProductModel p, int action) {
 		super(m);
+		master.getController().registerProductObserver(this);
 		this.product = p;
-		this.setPreferredSize(new Dimension(300,150));
+		super.setPreferredSize(new Dimension(300,150));
 		contentPanel.setLayout(new GridLayout(3,2));
 		
 		this.ProductNumber = new JLabel("Product No.");
@@ -52,19 +55,19 @@ public class ProductDetailPanel extends ChildPanel implements ActionListener {
 			
 			this.deleteButton = new JButton("Delete");
 			this.deleteButton.addActionListener(this);
-			this.updateButton.setActionCommand("delete");
+			this.deleteButton.setActionCommand("delete");
 			
 			contentPanel.add(updateButton);
 			contentPanel.add(deleteButton);
 		}else if(action == 0){
 			//add on 0
-			this.updateButton = new JButton("Add");
-			this.updateButton.addActionListener(this);
-			this.updateButton.setActionCommand("add");
-			contentPanel.add(updateButton);
+			this.addButton = new JButton("Add");
+			this.addButton.addActionListener(this);
+			this.addButton.setActionCommand("add");
+			contentPanel.add(addButton);
 		}
 		
-
+		super.myTitle = "Product Detail";
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -77,7 +80,19 @@ public class ProductDetailPanel extends ChildPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()){
-			case "add":
+			case("update"):
+				System.out.println("Something");
+				String pnum1 = ProductNumberField.getText();
+				String desc1 = DescriptionField.getText();
+				if(product.editModel(pnum1, desc1) == -1){
+					master.displayChildMessage("Invalid values");
+				}else{
+					master.getController().updateProduct(product);
+				}
+				this.product = new ProductModel();
+				this.updatePanel();
+				break;
+			case("add"):
 				String pnum = ProductNumberField.getText();
 				String desc = DescriptionField.getText();
 				if(product.editModel(pnum, desc) != -1){
@@ -90,18 +105,23 @@ public class ProductDetailPanel extends ChildPanel implements ActionListener {
 				this.product = new ProductModel();
 				this.updatePanel();
 				break;
-			case "delete":
-				break;
-			case "update":
-				String pnum1 = ProductNumberField.getText();
-				String desc1 = DescriptionField.getText();
-				if(product.editModel(pnum1, desc1) == -1){
-					master.displayChildMessage("Invalid values");
-				}else{
-					master.getController().updateProduct(product);
-				}
+			case("delete"):
 				break;
 			}
 		}
+	
+public void updateObserver(ProductModel m, int action) {
+		
+		//action = 0 : delete
+		if(action == 0){
+			//TODO Figure out how to close JPanels
+		}
+		//action = 1 : update
+		if(action == 1){
+			//this.thisPart = m;
+			this.ProductNumberField.setText(product.getprodNum());
+			this.DescriptionField.setText(product.getDesc());
+		}
+	}
 
 }

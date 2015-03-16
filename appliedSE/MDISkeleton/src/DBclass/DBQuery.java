@@ -288,7 +288,7 @@ public class DBQuery {
 		PartModel old = this.getPart(p.getId());
 		boolean first = true;
 		//insert into part table
-		String query = "update part set ";
+		/*String query = "update part set ";
 		if(!old.getPname().equals(p.getPname())){
 			query += "pname = \""+p.getPname()+"\"";
 			if(first){
@@ -328,12 +328,56 @@ public class DBQuery {
 			query += "unit= \"" + p.getQunit() +"\"";
 		}
 		
-		query += "version= \"" + p.getVersion() +"\"";
-		query +=" where pid = " +p.getId();
+		query += ", version= \"" + p.getVersion() +"\"";
+		query +=" where pid = " +p.getId();*/
+
+		String query =  "update ignore part set pname = \""
+				+p.getPname()+"\", pnum = \""+p.getPnum() +"\", pnumext = \"" + p.getExternal() +"\", unit = \"" + p.getQunit() +
+				"\", vendor = \""+ p.getVendor() +"\", version = "+p.getVersion() + " where pid = "+ p.getId();
 		//System.out.println(query);
 		try{
 			Statement s = myConnection.createStatement();
 			s.executeUpdate(query);			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}		
+	}
+	
+	public void updateProduct(ProductModel p){	
+
+		String query =  "update ignore product set description = \""
+				+p.getDesc()+"\", productno = \""+p.getprodNum() +"\", version = "+p.getVersion() + " where id = "+ p.getId();
+		System.out.println(query);
+		try{
+			Statement s = myConnection.createStatement();
+			s.executeUpdate(query);			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}		
+	}
+	
+	public void updateProductPart(ProductPartModel p){	
+
+		String query =  "update ignore ProductPart set quantity = "
+				+p.getQuantity()+", version = "+p.getVersion() + " where partid = "+ p.getPartId() +" and productid = "+p.getProductId();
+		System.out.println(query);
+		try{
+			Statement s = myConnection.createStatement();
+			s.executeUpdate(query);			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}		
+	}
+	
+	public void addProductPart(ProductPartModel p){	
+
+		String query = "insert into ProductPart (partid, productid, quantity, version) "
+				+ "values ("+p.getPartId()+","+p.getProductId()+", "+p.getQuantity()+", 1)";
+		System.out.println(query);
+		try{
+			Statement s = myConnection.createStatement();
+			int iid = s.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+			//this.addToInventory(p);
 		}catch(SQLException e){
 			e.printStackTrace();
 		}		

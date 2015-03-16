@@ -116,6 +116,7 @@ public class ProductPartPanel extends ChildPanel implements ActionListener, Mous
 		switch(e.getActionCommand()){
 			case "add":
 				ProductPartModel i = new ProductPartModel();
+				i.setProductId(m.getId());
 				ProductPartDetailPanel ipan = new ProductPartDetailPanel(master, i,m, 0);
 				master.openMDIChild(ipan);
 				break;
@@ -128,7 +129,7 @@ public class ProductPartPanel extends ChildPanel implements ActionListener, Mous
 			break;
 		case "edit":
 			if (listTable.getSelectedRow() >= 0 ){
-				ProductPartModel i2 = new ProductPartModel();
+				ProductPartModel i2 = m.getPartEntry(listTable.getSelectedRow());
 				ProductPartDetailPanel ipan2 = new ProductPartDetailPanel(master, i2,m, 1);
 				master.openMDIChild(ipan2);
 			}
@@ -183,5 +184,13 @@ public class ProductPartPanel extends ChildPanel implements ActionListener, Mous
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 	
+	}
+	
+	public void updateObserver(ProductModel p, int action) {
+		// TODO Auto-generated method stub
+		this.parts = m.getParts();
+		makeTable();
+		this.scrollPane.repaint();
+		
 	}
 }

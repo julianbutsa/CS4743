@@ -15,6 +15,7 @@ import javax.swing.ListSelectionModel;
 
 import DBclass.DBQuery;
 import Model.ItemModel;
+import Model.PartModel;
 import Model.ProductModel;
 
 public class ProductPanel extends ChildPanel implements ActionListener, MouseListener{
@@ -71,7 +72,7 @@ public class ProductPanel extends ChildPanel implements ActionListener, MouseLis
 				editButton.setEnabled(false);
 				contentPanel.add(editButton);
 				
-				detailButton = new JButton("Detail Entry");
+				detailButton = new JButton("Product Parts");
 				detailButton.setActionCommand("detail");
 				detailButton.addActionListener(this);
 				detailButton.setEnabled(false);
@@ -87,17 +88,18 @@ public class ProductPanel extends ChildPanel implements ActionListener, MouseLis
 		
 		java.util.Iterator<ProductModel> i = products.iterator();
 		
-		Object[][] data = new String[products.size()][2];
+		Object[][] data = new String[products.size()][3];
 		
 		int index = 0;
 		while(i.hasNext()){
 			ProductModel temp = i.next();
-			data[index][0] = temp.getprodNum();
-			data[index][1] = String.valueOf(temp.getId());
+			data[index][0] = String.valueOf(temp.getId());
+			data[index][1] = temp.getprodNum();
+			data[index][2] = temp.getDesc();
 			index++;
 		}
 		
-		String[] columnNames = {"Product Num", "Product Id"};
+		String[] columnNames = {"Product Id", "Product Num", "Description"};
 		
 		if(this.listTable != null){
 			this.listTable.setVisible(false);
@@ -142,12 +144,14 @@ public class ProductPanel extends ChildPanel implements ActionListener, MouseLis
 					ProductDetailPanel ipan2 = new ProductDetailPanel(master, i2, 1);
 					master.openMDIChild(ipan2);
 				}
+				break;
 			case "detail":
 				if (listTable.getSelectedRow() >= 0 ){
 					ProductModel i3 = master.getController().getProductEntry(listTable.getSelectedRow());
 					ProductPartPanel ipan3 = new ProductPartPanel(master, i3);
 					master.openMDIChild(ipan3);
 				}
+				break;
 		}
 		
 	}
@@ -195,14 +199,19 @@ public class ProductPanel extends ChildPanel implements ActionListener, MouseLis
 	}
 	
 	
-	private void redraw(){
-		makeTable();
-	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 	
+	}
+	
+	public void updateObserver(ProductModel p, int action) {
+		// TODO Auto-generated method stub
+		this.products = master.getController().myDB.getProducts();
+		makeTable();
+		this.scrollPane.repaint();
+		
 	}
 
 }

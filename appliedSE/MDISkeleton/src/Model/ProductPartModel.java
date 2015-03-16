@@ -55,4 +55,8 @@ public class ProductPartModel {
 	public void setVersion(int a){
 		version = a;
 	}
+	
+	public void setProductId(int i){
+		ProductId = i;
+	}
 }

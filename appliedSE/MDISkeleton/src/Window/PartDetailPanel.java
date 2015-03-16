@@ -53,7 +53,7 @@ public class PartDetailPanel extends ChildPanel implements ActionListener, PartO
 		this.ExternalIdField = new JTextField(thisPart.getExternal());
 		this.VendorField = new JTextField(thisPart.getVendor());
 		
-		String[] input = { "Linear Feet", "“Pieces"};
+		String[] input = { "Linear Feet", "Pieces"};
 		UnitField = new JComboBox(input);
 		
 		

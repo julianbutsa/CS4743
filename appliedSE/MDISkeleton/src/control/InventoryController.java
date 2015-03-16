@@ -16,6 +16,8 @@ public class InventoryController {
 	
 	private ArrayList<PartObserver> partObservers;
 	private ArrayList<InventoryObserver> invObservers;
+	private ArrayList<ProductObserver> productObservers;
+	private ArrayList<ProductPartObserver> ppObservers;
 	
 	int partno;
 	int itemno;
@@ -34,6 +36,8 @@ public class InventoryController {
 		this.ProductPartList = myDB.getProductParts();
 		allocateProductParts();
 		this.partObservers = new ArrayList<PartObserver>();
+		this.productObservers = new ArrayList<ProductObserver>();
+		this.ppObservers = new ArrayList<ProductPartObserver>();
 		this.invObservers = new ArrayList<InventoryObserver>();
 		partno = Inventory.size();
 		itemno = ItemInventory.size();
@@ -179,6 +183,17 @@ public class InventoryController {
     	return 0;
     }
     
+    public int addProductPart(ProductPartModel p){
+    	if(p.getQuantity() <= 0){
+    		System.out.println("Quantity must be above 0");
+    		return -1;
+    	}
+    	ProductPartList.add(p);
+    	myDB.addProductPart(p);
+    	//updateInvObservers(item, 0);
+    	return 0;
+    }
+    
     public int addItem(ItemModel i){
     	if(checkItemInventory(i.getPart(), i.getLocation()) == -1){
     		System.out.println("Part/Location Combination Taken");
@@ -297,22 +312,32 @@ public class InventoryController {
 
 	public void updatePart(PartModel model) {
 		// TODO Auto-generated method stub
-		PartModel temp = myDB.getPart(model.getId());
+		/*PartModel temp = myDB.getPart(model.getId());
 		if(temp.getVersion() != model.getVersion()){
 			System.out.println("Edit error, Versions out of Sync");
-		}
+		}*/
 		model.VersionIncrease();
 		myDB.updatePart(model);
 		updatePartObservers(model, 1);
 	}
 	
 	public void updateProduct(ProductModel model){
-		ProductModel temp = myDB.getProduct(model.getId());
+		/*ProductModel temp = myDB.getProduct(model.getId());
 		if(temp.getVersion() != model.getVersion()){
 			System.out.println("Edit error, Versions out of Sync");
-		}
+		}*/
 		model.VersionIncrease();
-		//myDB.updateProduct(model);
+		myDB.updateProduct(model);
+		//updateProductObservers(model, 1);
+	}
+	
+	public void updateProductPart(ProductPartModel model){
+		/*ProductModel temp = myDB.getProduct(model.getId());
+		if(temp.getVersion() != model.getVersion()){
+			System.out.println("Edit error, Versions out of Sync");
+		}*/
+		model.VersionIncrease();
+		myDB.updateProductPart(model);
 		//updateProductObservers(model, 1);
 	}
 	
@@ -320,10 +345,10 @@ public class InventoryController {
 	public void updateInventory(ItemModel model){
 		//System.out.println("updating inventory");
 		
-		ItemModel temp = myDB.getItem(model.getId());
+		/*ItemModel temp = myDB.getItem(model.getId());
 		if(temp.getVersion() != model.getVersion()){
 			System.out.println("Edit error, Versions out of Sync");
-		}
+		}*/
 		model.VersionIncrease();
 		myDB.updateInventory(model);
 		updateInvObservers(model, 1);
@@ -345,6 +370,14 @@ public class InventoryController {
 		this.partObservers.add(o);
 	}
 	
+	public void registerProductObserver(ProductObserver o){
+		this.productObservers.add(o);
+	}
+	
+	public void registerProductPartObserver(ProductPartObserver o){
+		this.ppObservers.add(o);
+	}
+	
 	public void registerInvObserver(InventoryObserver o){
 		this.invObservers.add(o);
 	}
@@ -353,6 +386,16 @@ public class InventoryController {
 	public void updatePartObservers(PartModel m, int action){
 		for(int i=0; i < partObservers.size();i++){
 			partObservers.get(i).updateObserver(m,action);
+		}
+	}
+	public void updateProductObservers(ProductModel m, int action){
+		for(int i=0; i < productObservers.size();i++){
+			productObservers.get(i).updateObserver(m,action);
+		}
+	}
+	public void updateProductPartObservers(ProductPartModel m, int action){
+		for(int i=0; i < ppObservers.size();i++){
+			ppObservers.get(i).updateObserver(m,action);
 		}
 	}
 	public void updateInvObservers(ItemModel imodel, int action){
