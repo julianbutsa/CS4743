@@ -1,6 +1,7 @@
 package Window;
 
 import java.awt.Dimension;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -17,14 +18,14 @@ import javax.swing.ListSelectionModel;
 
 
 
-
+import control.ProductPartObserver;
 import DBclass.DBQuery;
 import Model.ItemModel;
 import Model.ProductModel;
 import Model.ProductPartModel;
 import Model.PartModel;
 
-public class ProductPartPanel extends ChildPanel implements ActionListener, MouseListener{
+public class ProductPartPanel extends ChildPanel implements ActionListener, MouseListener, ProductPartObserver{
 
 	private JScrollPane scrollPane;
 	private JTable listTable;
@@ -38,6 +39,7 @@ public class ProductPartPanel extends ChildPanel implements ActionListener, Mous
 	public ProductPartPanel(win m, ProductModel model ){
 		super(m);
 		this.myTitle = "Products";
+		master.getController().registerProductPartObserver(this);
 
 		//TODO figure out how to set the location of a child panel
 		//this.setLocation(master.getWidth()/2, 0);
@@ -187,7 +189,7 @@ public class ProductPartPanel extends ChildPanel implements ActionListener, Mous
 	
 	}
 	
-	public void updateObserver(ProductModel p, int action) {
+	public void updateObserver(ProductPartModel p, int action) {
 		// TODO Auto-generated method stub
 		this.parts = mod.getParts();
 		makeTable();

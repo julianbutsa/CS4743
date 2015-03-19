@@ -22,14 +22,13 @@ public class PartListPanel extends ChildPanel implements MouseListener, ActionLi
 	private JButton addButton;
 	private JButton deleteButton;
 	private JButton editButton;
-	private JButton updateButton;
 	
 	public ArrayList<PartModel> partList;
 	
 	
 	public PartListPanel(win m, ArrayList<PartModel> p) {
 		super(m);
-		//master.getController().registerPartObserver(this);
+		master.getController().registerPartObserver(this);
 		this.myTitle = "Part List";
 		
 		//get list

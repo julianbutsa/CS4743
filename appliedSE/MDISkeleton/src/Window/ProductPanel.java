@@ -1,6 +1,7 @@
 package Window;
 
 import java.awt.Dimension;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -18,7 +19,9 @@ import Model.ItemModel;
 import Model.PartModel;
 import Model.ProductModel;
 
-public class ProductPanel extends ChildPanel implements ActionListener, MouseListener{
+import control.ProductObserver;
+
+public class ProductPanel extends ChildPanel implements ActionListener, MouseListener, ProductObserver{
 
 
 	private JScrollPane scrollPane;
@@ -34,7 +37,7 @@ public class ProductPanel extends ChildPanel implements ActionListener, MouseLis
 	
 	public ProductPanel(win m, ArrayList<ProductModel> p ) {
 		super(m);
-		//master.getController().registerInvObserver(this);
+		master.getController().registerProductObserver(this);
 		this.myTitle = "Products";
 
 		//TODO figure out how to set the location of a child panel

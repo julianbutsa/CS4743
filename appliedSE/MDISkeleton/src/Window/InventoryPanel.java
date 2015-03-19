@@ -142,6 +142,7 @@ public class InventoryPanel extends ChildPanel implements ActionListener , Mouse
 					InventoryDetailPanel ipan2 = new InventoryDetailPanel( master, i2, 1 );
 					master.openMDIChild(ipan2);
 				}
+				break;
 		}
 		
 	}

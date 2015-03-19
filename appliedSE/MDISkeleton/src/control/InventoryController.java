@@ -341,7 +341,7 @@ public class InventoryController {
 		}
 		model.VersionIncrease();
 		myDB.updateProduct(model);
-		//updateProductObservers(model, 1);
+		updateProductObservers(model, 1);
 	}
 	
 	public void updateProductPart(ProductPartModel model){
@@ -351,7 +351,7 @@ public class InventoryController {
 		}
 		model.VersionIncrease();
 		myDB.updateProductPart(model);
-		//updateProductObservers(model, 1);
+	    updateProductPartObservers(model, 1);
 	}
 	
 	
