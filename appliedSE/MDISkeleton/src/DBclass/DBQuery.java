@@ -501,6 +501,19 @@ public class DBQuery {
 		
 	}
 	
+	public int login(String usr, String pass) {
+		// TODO Auto-generated method stub
+		String query =  "";
+		try{
+			Statement s = myConnection.createStatement();
+			s.executeUpdate(query);			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}		
+		return 0;
+	}
+	
+	
 	public void updateInventory(ItemModel i){
 		/*
 		String query = "SET foreign_key_checks = 0 ";
@@ -561,4 +574,6 @@ public class DBQuery {
 			e.printStackTrace();
 		}
 	}
+
+
 }
