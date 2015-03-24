@@ -49,18 +49,50 @@ public class win extends JFrame {
 		menu.add(menuItem);
 		menuBar.add(menu);
 		
-		menu = new JMenu("Child");
-		menuItem = new JMenuItem("Show Child");
+		menu = new JMenu("Windows");
+		menuItem = new JMenuItem("Parts");
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ChildPanel child = new ChildPanel(win.this);
-				openMDIChild(child);
+				openPartList();
+				//openMDIChild(child);
+			}
+		});
+		menu.add(menuItem);
+		
+		menuItem = new JMenuItem("Inventory");
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				openInventory();
+				//openMDIChild(child);
+			}
+		});
+		menu.add(menuItem);
+		
+		menuItem = new JMenuItem("Products");
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				openProduct();
+				//openMDIChild(child);
 			}
 		});
 		menu.add(menuItem);
 		menuBar.add(menu);
 
+		menu = new JMenu("Network");
+		menuItem = new JMenuItem("Login");
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				openProduct();
+				//openMDIChild(child);
+			}
+		});
+		menu.add(menuItem);
+		menuBar.add(menu);
+		
 		setJMenuBar(menuBar);
 		   
 		
@@ -105,11 +137,21 @@ public class win extends JFrame {
 		frame.setVisible(true);		
 		
 		//open an inventory window
-		frame.openMDIChild(new PartListPanel(frame, masterController.getInventory()));
+		frame.openMDIChild(new PartListPanel(frame, masterController.getInventory()));		
 		frame.openMDIChild(new InventoryPanel(frame, masterController.getItemInventory()));
 		frame.openMDIChild(new ProductPanel(frame, masterController.getProducts()));
 	}
 
+	public void openPartList(){
+		this.openMDIChild(new PartListPanel(this, masterController.getInventory()));
+	}
+	public void openInventory(){
+		this.openMDIChild(new InventoryPanel(this, masterController.getItemInventory()));
+	}
+	public void openProduct(){
+		this.openMDIChild(new ProductPanel(this, masterController.getProducts()));
+	}
+	//public void 
 	//main: launch the JFrame on the EDT	
 	public void run() {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -119,14 +161,6 @@ public class win extends JFrame {
         });
 	}
 
-	public void openPartWindow(){
-		
-	}
-	
-	public void openInventoryWindow(){
-		
-	}
-	
 	public int getWidth(){
 		return super.getWidth();
 	}
