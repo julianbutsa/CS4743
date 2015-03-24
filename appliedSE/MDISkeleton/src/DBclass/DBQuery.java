@@ -501,18 +501,41 @@ public class DBQuery {
 		
 	}
 	
-	public int login(String usr, String pass) {
+	public UserModel login(String usr, String pass) {
 		// TODO Auto-generated method stub
-		String query =  "";
+		System.out.println(usr);
+		String query =  "select * from login where usr = \""+usr+"\"";
+		String p;
 		try{
 			Statement s = myConnection.createStatement();
-			s.executeUpdate(query);			
+			ResultSet rs = s.executeQuery(query);
+			
+			
+			if(rs.next()){
+				p = rs.getString("pwd");
+				if(p.equals(pass)){
+					return new UserModel(rs.getString("usr"), rs.getString("email"), rs.getInt("permissions"));
+				}
+			}
+			System.out.printf("%s\n", rs.getString("pwd"));
+
 		}catch(SQLException e){
 			e.printStackTrace();
+			return null;
 		}		
-		return 0;
+		
+		return null;
 	}
 	
+	public void register(UserModel m, String password){
+		String query = "insert into login ( usr, pwd, email, permissions) values (\""+ m.getUsername() + "\",\""+  password + "\", \""+m.getEmail() + "\", "+ 0 + ")";
+		try{
+			Statement s = myConnection.createStatement();
+			s.executeUpdate(query);
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
 	
 	public void updateInventory(ItemModel i){
 		/*

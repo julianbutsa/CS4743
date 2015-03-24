@@ -26,10 +26,12 @@ public class InventoryController {
 	
 	public DBQuery myDB;
 	
-	
+	private Session currentSession;
 	
 	public InventoryController(){
 		this.myDB = new DBQuery();
+		this.currentSession  = new Session();
+		
 		this.Inventory = myDB.getParts();
 		this.ItemInventory = myDB.getInventory();
 		this.ProductList = myDB.getProducts();
@@ -436,6 +438,13 @@ public class InventoryController {
 	public ProductModel getProductEntry(int selectedRow) {
 		// TODO Auto-generated method stub
 		return ProductList.get(selectedRow);
+	}
+
+	
+
+	public void setSession(Session s) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

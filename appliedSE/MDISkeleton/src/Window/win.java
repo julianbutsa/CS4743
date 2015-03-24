@@ -49,6 +49,7 @@ public class win extends JFrame {
 		menu.add(menuItem);
 		menuBar.add(menu);
 		
+		//Make a menu for opening the windows.
 		menu = new JMenu("Windows");
 		menuItem = new JMenuItem("Parts");
 		menuItem.addActionListener(new ActionListener() {
@@ -81,13 +82,21 @@ public class win extends JFrame {
 		menu.add(menuItem);
 		menuBar.add(menu);
 
+		//make a Network Menu for logging in and Registering
 		menu = new JMenu("Network");
 		menuItem = new JMenuItem("Login");
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				openProduct();
-				//openMDIChild(child);
+				openLogin();
+			}
+		});
+		menu.add(menuItem);
+		menuItem = new JMenuItem("Register");
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				openRegistration();
 			}
 		});
 		menu.add(menuItem);
@@ -127,8 +136,7 @@ public class win extends JFrame {
 	}
 	
 	
-	
-	
+
 	//creates and displays the JFrame
 	public void createAndShowGUI() {
 		win frame = new win("MDI Skeleton");
@@ -151,6 +159,16 @@ public class win extends JFrame {
 	public void openProduct(){
 		this.openMDIChild(new ProductPanel(this, masterController.getProducts()));
 	}
+	
+	
+	public void openLogin(){
+		this.openMDIChild( new loginPanel(this, 0));
+	}
+	
+	public void openRegistration(){
+		this.openMDIChild( new loginPanel(this, 1));
+	}
+	
 	//public void 
 	//main: launch the JFrame on the EDT	
 	public void run() {
