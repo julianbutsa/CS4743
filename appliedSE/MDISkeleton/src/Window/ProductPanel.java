@@ -1,7 +1,6 @@
 package Window;
 
 import java.awt.Dimension;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -18,7 +17,7 @@ import DBclass.DBQuery;
 import Model.ItemModel;
 import Model.PartModel;
 import Model.ProductModel;
-
+import Model.Session;
 import control.ProductObserver;
 
 public class ProductPanel extends ChildPanel implements ActionListener, MouseListener, ProductObserver{
@@ -128,24 +127,39 @@ public class ProductPanel extends ChildPanel implements ActionListener, MouseLis
 		
 		switch(e.getActionCommand()){
 			case "add":
+				Session a = master.getController().getSession();
+				if(a.getAddProduct()){
 				ProductModel i = new ProductModel();
 				ProductDetailPanel ipan = new ProductDetailPanel(master, i, 0);
 				master.openMDIChild(ipan);
+				}else{
+					System.out.println("Insufficient Permissions");
+				}
 				break;
 				
 			case "delete":
+				Session a2 = master.getController().getSession();
+				if(a2.getDeleteProduct()){
 				if ( listTable.getSelectedRow() >= 0){
 					ProductModel toDelete = master.getController().getProductEntry(listTable.getSelectedRow());
 					if(master.getController().deleteProduct(toDelete) == -1){
 						master.displayChildMessage("Quantity needs to be 0 before deletion");
 					}
 				}
+				}else{
+					System.out.println("Insufficient Permissions");
+				}
 				break;
 			case "edit":
+				Session a3 = master.getController().getSession();
+				if(a3.getAddProduct()){
 				if (listTable.getSelectedRow() >= 0 ){
 					ProductModel i2 = master.getController().getProductEntry(listTable.getSelectedRow());
 					ProductDetailPanel ipan2 = new ProductDetailPanel(master, i2, 1);
 					master.openMDIChild(ipan2);
+				}
+				}else{
+					System.out.println("Insufficient Permissions");
 				}
 				break;
 			case "detail":

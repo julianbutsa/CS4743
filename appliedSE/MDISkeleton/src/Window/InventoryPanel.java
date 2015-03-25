@@ -17,6 +17,7 @@ import control.InventoryObserver;
 import DBclass.DBQuery;
 import Model.ItemModel;
 import Model.PartModel;
+import Model.Session;
 
 public class InventoryPanel extends ChildPanel implements ActionListener , MouseListener, InventoryObserver{
 
@@ -122,25 +123,40 @@ public class InventoryPanel extends ChildPanel implements ActionListener , Mouse
 		// TODO Auto-generated method stub
 		switch(e.getActionCommand()){
 			case "add":
+				Session a = master.getController().getSession();
+				if(a.getAddInventory()){
 				ItemModel i = new ItemModel();
 				InventoryDetailPanel ipan = new InventoryDetailPanel(master, i, 0);
 				master.openMDIChild(ipan);
 				//call editPanel
 				//itemPanel tempframe = new itemPanel(itemPanel.ADD_MODE, 0, myHandler);
+				}else{
+					System.out.println("Insufficient Permissions");
+				}
 				break;
 			case "delete":
+				Session a2 = master.getController().getSession();
+				if(a2.getDeleteInventory()){
 				if ( listTable.getSelectedRow() >= 0){
 					ItemModel toDelete = master.getController().getInventoryEntry(listTable.getSelectedRow());
 					if(master.getController().deleteItem(toDelete) == -1){
 						master.displayChildMessage("Quantity needs to be 0 before deletion");
 					}
 				}
+				}else{
+					System.out.println("Insufficient Permissions");
+				}
 				break;
 			case "edit":
+				Session a3 = master.getController().getSession();
+				if(a3.getAddInventory()){
 				if (listTable.getSelectedRow() >= 0 ){
 					ItemModel i2 = master.getController().getInventoryEntry(listTable.getSelectedRow());
 					InventoryDetailPanel ipan2 = new InventoryDetailPanel( master, i2, 1 );
 					master.openMDIChild(ipan2);
+				}
+				}else{
+					System.out.println("Insufficient Permissions");
 				}
 				break;
 		}

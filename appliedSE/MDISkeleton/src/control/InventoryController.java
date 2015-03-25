@@ -57,7 +57,10 @@ public class InventoryController {
 		}
 	}
 	
-
+	public Session getSession(){
+		return currentSession;
+	}
+	
 	public ArrayList<PartModel> getInventory(){
 		return Inventory;
 	}
@@ -395,6 +398,48 @@ public class InventoryController {
 	
 	public void registerInvObserver(InventoryObserver o){
 		this.invObservers.add(o);
+	}
+	
+	public int checkPermission(int action, int permission){
+		/*This is assuming Permissions 1 = Inventory Manager, 2 = Production Manager, and 3 = Admin */
+		
+		if(action == 1 || action == 2 || action == 3 || action == 4){
+			//View Product Templates
+			//Add/Edit Product Templates Permissions
+			//Delete Product Templates Permissions
+			//Create Products
+			if(permission == 2 || permission == 3){
+				return 0;
+			}else{
+				return -1;
+			}
+		}
+		if(action == 6 || action == 8){
+			//View Inventory Items
+			//View Parts
+			return 0;
+		}
+		if(action == 6 || action == 8){
+			//Add/Edit Inventory Items
+			//Add/Edit Parts
+			if(permission == 1 || permission == 3){
+				return 0;
+			}else{
+				return -1;
+			}
+		}
+		if(action == 9 || action == 10){
+			//Delete Inventory
+			//Delete Parts
+			if(permission == 3){
+				return 0;
+			}else{
+				return -1;
+			}
+		}
+		
+		
+		return -1;
 	}
 	
 	

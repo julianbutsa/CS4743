@@ -100,6 +100,46 @@ public class Session {
 		canDeleteParts = false;
 	}
 	
+	public boolean getAddPart(){
+		return canAddParts;
+	}
+	
+	public boolean getViewProduct(){
+		return canViewProductTemplates;
+	}
+	
+	public boolean getAddProduct(){
+		return canAddProductTemplates;
+	}
+	
+	public boolean getCreateProduct(){
+		return canCreateProducts;
+	}
+	
+	public boolean getDeleteProduct(){
+		return canDeleteProducts;
+	}
+	
+	public boolean getViewInventory(){
+		return canViewInventory;
+	}
+	public boolean getAddInventory(){
+		return canAddInventory;
+	}
+	
+	public boolean getDeleteInventory(){
+		return canDeleteInventory;
+	}
+	
+	public boolean getViewParts(){
+		return canViewParts;
+	}
+	
+	public boolean getDeleteParts(){
+		return canDeleteParts;
+	}
+	
+	
 	
 	
 	

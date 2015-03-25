@@ -23,6 +23,7 @@ public class PartListPanel extends ChildPanel implements MouseListener, ActionLi
 	private JButton deleteButton;
 	private JButton editButton;
 	
+	
 	public ArrayList<PartModel> partList;
 	
 	
@@ -120,25 +121,39 @@ public class PartListPanel extends ChildPanel implements MouseListener, ActionLi
 		switch(e.getActionCommand()){
 			case "add":
 				//call editPanel
-				PartDetailPanel child = new PartDetailPanel(this.master, new PartModel(), 0);
-				master.openMDIChild(child);
+				Session a = master.getController().getSession();
+				if(a.getAddPart()){
+					PartDetailPanel child = new PartDetailPanel(this.master, new PartModel(), 0);
+					master.openMDIChild(child);
+				}else{
+					System.out.println("Insufficient Permissions");
+				}
 				//itemPanel tempframe = new itemPanel(itemPanel.ADD_MODE, 0, myHandler);
 				break;
 			case "delete":
-				System.out.println("Hit");
+				Session a2 = master.getController().getSession();
+				if(a2.getDeleteParts()){
 				if ( listTable.getSelectedRow() >= 0){
 					PartModel toDelete = master.getController().getPart(listTable.getSelectedRow());
 					if(master.getController().deletePart(toDelete) == -1){
 							master.displayChildMessage("Failed to delete.\n Inventory entries remain");
 					}
 				}
+				}else{
+					System.out.println("Insufficient Permissions");
+				}
 				break;
 			case "edit":
+				Session a3 = master.getController().getSession();
+				if(a3.getAddPart()){
 				if (listTable.getSelectedRow() >= 0 ){
 					PartModel p = master.getController().getPart(listTable.getSelectedRow());
 					master.openMDIChild(new PartDetailPanel(master,  p, 1));
 					//itemPanel editframe = new itemPanel(itemPanel.EDIT_MODE, listTable.getSelectedRow(), myHandler);
 
+				}
+				}else{
+					System.out.println("Insufficient Permissions");
 				}
 				break;
 		}
