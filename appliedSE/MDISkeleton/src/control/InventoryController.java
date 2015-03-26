@@ -488,7 +488,7 @@ public class InventoryController {
 	
 
 	public void setSession(Session s) {
-		// TODO Auto-generated method stub
+		currentSession = s;
 		
 	}
 

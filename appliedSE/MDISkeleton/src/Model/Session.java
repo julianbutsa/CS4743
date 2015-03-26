@@ -61,16 +61,19 @@ public class Session {
 		canViewParts = true;
 		switch(m.getPermissions()){
 			case 1:
+				//System.out.println("1");
 				canViewProductTemplates = true;
 				canAddProductTemplates = true;
 				canDeleteProductTemplates = true;
 				canCreateProducts = true;
 				break;
 			case 2:
+				//System.out.println("2");
 				canAddInventory = true;
 				canAddParts = true;
 				break;
 			case 3:
+				//System.out.println("3");
 				canViewProductTemplates = true;
 				canAddProductTemplates = true;
 				canDeleteProductTemplates = true;
@@ -99,6 +102,8 @@ public class Session {
 		canAddParts = false;
 		canDeleteParts = false;
 	}
+	
+	
 	
 	public boolean getAddPart(){
 		return canAddParts;
