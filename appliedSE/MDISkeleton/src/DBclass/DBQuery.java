@@ -78,6 +78,7 @@ public class DBQuery {
 		} 		
 		return returnList;
 	}
+	/*
 	public ArrayList<ItemModel> getInventory(){
 		ArrayList<ItemModel> returnList = null;
 		String query = "select * from inventory join location on (inventory.lid = location.lid)";
@@ -102,6 +103,48 @@ public class DBQuery {
 		} 		
 		return returnList;
 	}
+	*/
+	
+	public ArrayList<ItemModel> getInventory(){
+		ArrayList<ItemModel> returnList = null;
+		String query = "select * from inventory join location on (inventory.lid = location.lid)";
+		try {
+			Statement s = myConnection.createStatement();
+			ResultSet rs = s.executeQuery(query);
+			returnList = new ArrayList<ItemModel>();
+			//take everything from the resultSet and put it in a model class
+			while(rs.next()){
+				int flag = rs.getInt("partFlag");
+				PartModel tpart = null ;
+				ProductModel tprod = null;
+				if(rs.getInt("partFlag") == 0){
+					tpart = this.getPart(rs.getInt("pid"));
+					ItemModel m = new ItemModel(tpart, rs.getString("lname"), rs.getInt("qty"));
+					m.setId(rs.getInt("invid"));
+					m.setVersion(rs.getInt("version"));
+					m.setTypeFlag(flag);
+					returnList.add(m);
+				}else if(rs.getInt("partFlag")== 1){
+					tprod = this.getProduct(rs.getInt("pid"));
+					ItemModel m = new ItemModel(tprod, rs.getString("lname"), rs.getInt("qty"));
+					m.setId(rs.getInt("invid"));
+					m.setVersion(rs.getInt("version"));
+					m.setTypeFlag(flag);
+					returnList.add(m);
+				}
+
+			}
+			//close that stuff in case it got opened.
+			rs.close();
+			s.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 		
+		return returnList;
+	}
+	
+	
 	
 	public ArrayList<String> getLocations(){
 		ArrayList<String> returnList = null;

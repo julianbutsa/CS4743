@@ -81,21 +81,24 @@ public class InventoryPanel extends ChildPanel implements ActionListener , Mouse
 		
 		java.util.Iterator<ItemModel> i = inventory.iterator();
 		
-		Object[][] data = new String[inventory.size()][4];
+		Object[][] data = new String[inventory.size()][3];
 		
 		int index = 0;
 		while(i.hasNext()){
 			ItemModel temp = i.next();
-			data[index][0] = temp.getPart().getPnum();
-			data[index][1] = temp.getPart().getPname();
-			data[index][2] = temp.getLocation();
-			data[index][3] = String.valueOf(temp.getQuantity());
-			
+			if(temp.getTypeFlag() == 0){
+				data[index][0] = temp.getPart().getPnum();
+				data[index][1] = temp.getLocation();
+				data[index][2] = String.valueOf(temp.getQuantity());
+			}else{
+				data[index][0] = temp.getProduct().getprodNum();
+				data[index][1] = temp.getLocation();
+				data[index][2] = String.valueOf(temp.getQuantity());
+			}
 			index++;
 		}
 		
 		String[] columnNames = {"Part Num",
-								"Part Name",
 								"Location",
 								"Quantity",
                 				};

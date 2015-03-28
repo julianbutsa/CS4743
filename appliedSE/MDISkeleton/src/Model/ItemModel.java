@@ -4,13 +4,32 @@ import control.InventoryController;
 
 public class ItemModel {
 	int id;
+	public int typeFlag;
+	
+	ProductModel product;
 	PartModel part;
-	String location;
+	
+	String location;	
 	int quantity;
 	int version;
 	
 	public ItemModel(PartModel p, String l, int q) {
+		typeFlag = 0;
 		part = p;
+		if(l != null){
+			location = l;
+		}
+		else{
+			location = "unknown";
+		}
+		quantity = q;
+		id = 0;
+		version = 1;
+	}
+	
+	public ItemModel(ProductModel p, String l, int q) {
+		typeFlag = 1;
+		product = p;
 		if(l != null){
 			location = l;
 		}
@@ -100,4 +119,22 @@ public class ItemModel {
 	public void setVersion(int a){
 		version = a;
 	}
+
+	public int getTypeFlag() {
+		return typeFlag;
+	}
+
+	public void setTypeFlag(int typeFlag) {
+		this.typeFlag = typeFlag;
+	}
+
+	public ProductModel getProduct() {
+		return product;
+	}
+
+	public void setProduct(ProductModel product) {
+		this.product = product;
+	}
+	
+	
 }

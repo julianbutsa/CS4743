@@ -45,7 +45,12 @@ public class InventoryDetailPanel extends ChildPanel implements ActionListener, 
 		this.Location = new JLabel("Location");
 		this.Quantity = new JLabel("Quantity");
 		
-		this.PartNameField = new JLabel(i.getPart().getPname());
+		if(item.getTypeFlag() == 0){
+			this.PartNameField = new JLabel(i.getPart().getPname());
+		}else{
+			this.PartNameField = new JLabel("Product");
+		}
+		
 		this.QuantityField = new JTextField(Integer.toString(item.getQuantity()));
 		
 		ArrayList<String> loc = master.getController().getLocations();
@@ -88,10 +93,14 @@ public class InventoryDetailPanel extends ChildPanel implements ActionListener, 
 			contentPanel.add(deleteButton);
 			
 			//set jcombobox to the right part index
-			for(int j =0; j < parts.size(); j++){
-				if(item.getPart().getPnum().equals(input[j])){
-					PartIdField.setSelectedIndex(j);
+			if(item.getTypeFlag() == 0 ){
+				for(int j =0; j < parts.size(); j++){
+					if(item.getPart().getPnum().equals(input[j])){
+						PartIdField.setSelectedIndex(j);
+					}
 				}
+			}else{
+				//set this up for products
 			}
 			
 			for(int j =0; j < input.length; j++){
