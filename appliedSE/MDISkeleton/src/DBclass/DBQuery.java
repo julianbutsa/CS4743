@@ -293,10 +293,16 @@ public class DBQuery {
 	}
 	
 	public void addToInventory(ItemModel i){
-		int pid = i.getPart().getId();
+		int pid = 0;
+		if(i.typeFlag == 0){
+			pid = i.getPart().getId();
+		}else if(i.typeFlag == 1){
+			pid = i.getProduct().getId();
+		}
+		
 		int lid = this.getLocationId(i.getLocation());
-		String query = "insert into inventory (pid, lid, qty) "
-				+ "values (\""+pid+"\", "+ lid +", "+i.getQuantity()+")";
+		String query = "insert into inventory (pid, lid, qty, partFlag, version ) "
+				+ "values (\""+pid+"\", "+ lid +", "+i.getQuantity()+", "+i.getTypeFlag()+", "+i.getVersion()+")";
 		try{
 			Statement s = myConnection.createStatement();
 			int iid = s.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);

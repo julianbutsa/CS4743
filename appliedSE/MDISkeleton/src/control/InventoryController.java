@@ -1,6 +1,7 @@
 package control;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Observer;
 
 import DBclass.DBQuery;
@@ -490,6 +491,65 @@ public class InventoryController {
 	public void setSession(Session s) {
 		currentSession = s;
 		
+	}
+
+
+	public int addproductotinv(int productIndex, String s) {
+		// TODO Auto-generated method stub
+
+		ProductModel thisPart = ProductList.get(productIndex);
+		for(Iterator<ItemModel> i = ItemInventory.iterator(); i.hasNext();){
+			ItemModel p = i.next();
+			if(p.getTypeFlag() == 1){
+				if(p.getLocation().equals(s) && p.getProduct().getprodNum().equals(thisPart.getprodNum())){
+					p.setQuantity(p.getQuantity()+1);
+					return 0;
+				}
+			}
+		}
+		
+		
+		//check inventory
+		ArrayList a = thisPart.getParts();
+		for(Iterator<ProductPartModel> i = a.iterator();i.hasNext();){
+			ProductPartModel part = i.next();
+			for(Iterator<ItemModel> ii = ItemInventory.iterator(); ii.hasNext();){
+				ItemModel item = ii.next();
+				if(item.typeFlag == 0){
+					if(part.getPartId() == item.getPart().getId()){
+						if(item.getQuantity() < part.getQuantity()){
+							return -1;
+						}
+					}
+				}
+			}
+		}
+		
+		//adjust Inventory quantities.
+		for(Iterator<ProductPartModel> i = a.iterator();i.hasNext();){
+			ProductPartModel part = i.next();
+			for(Iterator<ItemModel> ii = ItemInventory.iterator(); ii.hasNext();){
+				ItemModel item = ii.next();
+				if(item.typeFlag == 0){
+					if(part.getPartId() == item.getPart().getId()){
+						item.setQuantity(item.getQuantity() - part.getQuantity());
+						myDB.updateInventory(item);
+					}
+				}
+			}
+		}
+		ItemModel newModel = new ItemModel(thisPart, s, 1);
+		newModel.setTypeFlag(1);
+		newModel.setVersion(1);
+		myDB.addToInventory(newModel);
+		
+		//update
+		for(Iterator<ItemModel> ii = ItemInventory.iterator(); ii.hasNext();){
+			ItemModel item = ii.next();
+			updateInvObservers(item, 1);
+		}
+		
+		return 0;
 	}
 
 

@@ -25,13 +25,21 @@ public class ProductDetailPanel extends ChildPanel implements ActionListener, Pr
 	private JButton updateButton;
 	private JButton deleteButton;
 	private JButton addButton;
-	
+	private JButton inventoryButton;
 	public ProductDetailPanel(win m, ProductModel p, int action) {
 		super(m);
 		master.getController().registerProductObserver(this);
 		this.product = p;
-		super.setPreferredSize(new Dimension(300,150));
-		contentPanel.setLayout(new GridLayout(3,2));
+		
+		if(action == 0){
+			super.setPreferredSize(new Dimension(300,150));
+			contentPanel.setLayout(new GridLayout(3,2));
+		}
+	
+		if(action == 1){
+			super.setPreferredSize(new Dimension(300,175));
+			contentPanel.setLayout(new GridLayout(4,2));
+		}
 		
 		this.ProductNumber = new JLabel("Product No.");
 		this.Description = new JLabel("Description");
@@ -49,6 +57,10 @@ public class ProductDetailPanel extends ChildPanel implements ActionListener, Pr
 		
 		//edit on 1
 		if(action == 1){
+			this.inventoryButton = new JButton("Add Inv");
+			inventoryButton.addActionListener(this);
+			inventoryButton.setActionCommand("addinv");
+			
 			this.updateButton = new JButton("Update");
 			this.updateButton.addActionListener(this);
 			this.updateButton.setActionCommand("update");
@@ -59,6 +71,7 @@ public class ProductDetailPanel extends ChildPanel implements ActionListener, Pr
 			
 			contentPanel.add(updateButton);
 			contentPanel.add(deleteButton);
+			contentPanel.add(inventoryButton);
 		}else if(action == 0){
 			//add on 0
 			this.addButton = new JButton("Add");
@@ -110,6 +123,16 @@ public class ProductDetailPanel extends ChildPanel implements ActionListener, Pr
 					master.displayChildMessage("Quantity needs to be 0 before deletion");
 				}
 				break;
+			case("addinv"):
+				ProductToInvPanel p = new ProductToInvPanel(this.master ,product);
+				master.openMDIChild(p);
+				break;
+			
+				/*
+				if(master.getController().addproductotinv(product) == -1){
+					master.displayChildMessage("Failed to add product");
+				}*/
+				
 			}
 		}
 	
