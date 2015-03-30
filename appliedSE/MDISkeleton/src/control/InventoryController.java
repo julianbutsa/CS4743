@@ -348,6 +348,8 @@ public class InventoryController {
 		model.VersionIncrease();
 		myDB.updateProduct(model);
 		updateProductObservers(model, 1);
+		ItemModel m = new ItemModel(); 
+		updateInvObservers(m, 1);
 	}
 	
 	public void updateProductPart(ProductPartModel model){

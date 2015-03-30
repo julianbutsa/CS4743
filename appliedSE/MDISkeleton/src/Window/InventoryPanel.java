@@ -88,10 +88,12 @@ public class InventoryPanel extends ChildPanel implements ActionListener , Mouse
 			ItemModel temp = i.next();
 			if(temp.getTypeFlag() == 0){
 				data[index][0] = temp.getPart().getPnum();
+				//data[index][4] = temp.getPart().getId();
 				data[index][1] = temp.getLocation();
 				data[index][2] = String.valueOf(temp.getQuantity());
 			}else{
 				data[index][0] = temp.getProduct().getprodNum();
+				//data[index][4] = temp.getProduct().getId();
 				data[index][1] = temp.getLocation();
 				data[index][2] = String.valueOf(temp.getQuantity());
 			}
@@ -99,6 +101,7 @@ public class InventoryPanel extends ChildPanel implements ActionListener , Mouse
 		}
 		
 		String[] columnNames = {"Part Num",
+								//"Part Id",
 								"Location",
 								"Quantity",
                 				};
