@@ -28,6 +28,7 @@ public class Session {
 	
 	
 	
+	
 	public Session(int user_level){
 		canViewInventory = true;
 		canViewParts = true;

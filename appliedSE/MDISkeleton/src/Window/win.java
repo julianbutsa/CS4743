@@ -18,6 +18,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import Model.Session;
 import control.InventoryController;
 
 /*
@@ -75,7 +76,12 @@ public class win extends JFrame {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				openProduct();
+				Session a = masterController.getSession();
+				if(a.getViewProduct()){
+					openProduct();
+				}else{
+					System.out.println("Insufficient Permissions");
+				}
 				//openMDIChild(child);
 			}
 		});
@@ -147,7 +153,7 @@ public class win extends JFrame {
 		//open an inventory window
 		frame.openMDIChild(new PartListPanel(frame, masterController.getInventory()));		
 		frame.openMDIChild(new InventoryPanel(frame, masterController.getItemInventory()));
-		frame.openMDIChild(new ProductPanel(frame, masterController.getProducts()));
+		//frame.openMDIChild(new ProductPanel(frame, masterController.getProducts()));
 	}
 
 	public void openPartList(){
