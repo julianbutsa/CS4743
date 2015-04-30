@@ -1,0 +1,12 @@
+/* AUTOMATICALLY GENERATED ON Wed Apr 29 18:21:38 CDT 2015*/
+/* DO NOT EDIT */
+
+grant {
+  permission javax.security.jacc.EJBMethodPermission "TestBean", "getnum,Remote,";
+  permission javax.security.jacc.EJBMethodPermission "TestBean", "setnum,Remote,int";
+};
+
+grant      principal * * {
+  permission javax.security.jacc.EJBRoleRefPermission "TestBean", "**";
+};
+
