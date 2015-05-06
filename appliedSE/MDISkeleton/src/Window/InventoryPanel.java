@@ -13,6 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
+import userRemote.SessionRemote;
 import control.InventoryObserver;
 import DBclass.DBQuery;
 import Model.ItemModel;
@@ -127,10 +128,12 @@ public class InventoryPanel extends ChildPanel implements ActionListener , Mouse
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		SessionRemote a = master.getController().getSession();
+		int p = a.getPermissions();
 		switch(e.getActionCommand()){
 			case "add":
-				Session a = master.getController().getSession();
-				if(a.getAddInventory()){
+				
+				if(p == 3 || p == 2){
 				ItemModel i = new ItemModel();
 				InventoryDetailPanel ipan = new InventoryDetailPanel(master, i, 0);
 				master.openMDIChild(ipan);
@@ -141,8 +144,7 @@ public class InventoryPanel extends ChildPanel implements ActionListener , Mouse
 				}
 				break;
 			case "delete":
-				Session a2 = master.getController().getSession();
-				if(a2.getDeleteInventory()){
+				if(p == 3){
 				if ( listTable.getSelectedRow() >= 0){
 					ItemModel toDelete = master.getController().getInventoryEntry(listTable.getSelectedRow());
 					if(master.getController().deleteItem(toDelete) == -1){
@@ -154,8 +156,7 @@ public class InventoryPanel extends ChildPanel implements ActionListener , Mouse
 				}
 				break;
 			case "edit":
-				Session a3 = master.getController().getSession();
-				if(a3.getAddInventory()){
+				if(p == 3 || p == 2){
 				if (listTable.getSelectedRow() >= 0 ){
 					ItemModel i2 = master.getController().getInventoryEntry(listTable.getSelectedRow());
 					InventoryDetailPanel ipan2 = new InventoryDetailPanel( master, i2, 1 );

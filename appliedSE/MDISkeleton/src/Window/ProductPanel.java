@@ -13,6 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
+import userRemote.SessionRemote;
 import DBclass.DBQuery;
 import Model.ItemModel;
 import Model.PartModel;
@@ -124,11 +125,11 @@ public class ProductPanel extends ChildPanel implements ActionListener, MouseLis
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+		SessionRemote sr = master.getController().getSession();
+		int pr = sr.getPermissions();
 		switch(e.getActionCommand()){
 			case "add":
-				Session a = master.getController().getSession();
-				if(a.getAddProduct()){
+				if(pr == 3 || pr == 1){
 				ProductModel i = new ProductModel();
 				ProductDetailPanel ipan = new ProductDetailPanel(master, i, 0);
 				master.openMDIChild(ipan);
@@ -138,8 +139,7 @@ public class ProductPanel extends ChildPanel implements ActionListener, MouseLis
 				break;
 				
 			case "delete":
-				Session a2 = master.getController().getSession();
-				if(a2.getDeleteProduct()){
+				if(pr == 3 || pr == 1){
 				if ( listTable.getSelectedRow() >= 0){
 					ProductModel toDelete = master.getController().getProductEntry(listTable.getSelectedRow());
 					if(master.getController().deleteProduct(toDelete) == -1){
@@ -151,8 +151,7 @@ public class ProductPanel extends ChildPanel implements ActionListener, MouseLis
 				}
 				break;
 			case "edit":
-				Session a3 = master.getController().getSession();
-				if(a3.getAddProduct()){
+				if(pr == 3 || pr == 1){
 				if (listTable.getSelectedRow() >= 0 ){
 					ProductModel i2 = master.getController().getProductEntry(listTable.getSelectedRow());
 					ProductDetailPanel ipan2 = new ProductDetailPanel(master, i2, 1);

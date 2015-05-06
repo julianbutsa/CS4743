@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Observer;
 
+import userRemote.SessionRemote;
 import DBclass.DBQuery;
 import Model.*;
 
@@ -27,11 +28,11 @@ public class InventoryController {
 	
 	public DBQuery myDB;
 	
-	private Session currentSession;
+	private SessionRemote currentSession;
 	
 	public InventoryController(){
 		this.myDB = new DBQuery();
-		this.currentSession  = new Session();
+		//this.currentSession  = new SessionRemote();
 		
 		this.Inventory = myDB.getParts();
 		this.ItemInventory = myDB.getInventory();
@@ -58,7 +59,7 @@ public class InventoryController {
 		}
 	}
 	
-	public Session getSession(){
+	public SessionRemote getSession(){
 		return currentSession;
 	}
 	
@@ -490,7 +491,7 @@ public class InventoryController {
 
 	
 
-	public void setSession(Session s) {
+	public void setSession(SessionRemote s) {
 		currentSession = s;
 		
 	}

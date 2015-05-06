@@ -51,6 +51,7 @@
     <server config-ref="server-config" name="server">
       <application-ref ref="__admingui" virtual-servers="__asadmin"></application-ref>
       <application-ref ref="SessionBean" virtual-servers="server"></application-ref>
+      <application-ref ref="TestBean" virtual-servers="server"></application-ref>
       <resource-ref ref="jdbc/__TimerPool"></resource-ref>
       <resource-ref ref="jdbc/__default"></resource-ref>
       <resource-ref ref="jms/__defaultConnectionFactory"></resource-ref>
@@ -436,11 +437,25 @@
   <applications>
     <application object-type="user" name="SessionBean" directory-deployed="true" location="${com.sun.aas.instanceRootURI}/eclipseApps/SessionBean/">
       <property name="archiveType" value="ejb"></property>
+      <property name="org.glassfish.ejb.startup.keepstate" value="true"></property>
       <property name="keepstate" value="true"></property>
       <property name="appLocation" value="${com.sun.aas.instanceRootURI}/eclipseApps/SessionBean/"></property>
       <property name="org.glassfish.ejb.container.application_unique_id" value="93739397358223360"></property>
       <property name="defaultAppName" value="SessionBean"></property>
       <module name="SessionBean">
+        <engine sniffer="ejb"></engine>
+        <engine sniffer="security"></engine>
+        <engine sniffer="weld"></engine>
+      </module>
+    </application>
+    <application object-type="user" name="TestBean" directory-deployed="true" location="${com.sun.aas.instanceRootURI}/eclipseApps/TestBean/">
+      <property name="archiveType" value="ejb"></property>
+      <property name="org.glassfish.ejb.startup.keepstate" value="true"></property>
+      <property name="keepstate" value="true"></property>
+      <property name="appLocation" value="${com.sun.aas.instanceRootURI}/eclipseApps/TestBean/"></property>
+      <property name="org.glassfish.ejb.container.application_unique_id" value="93739397358288896"></property>
+      <property name="defaultAppName" value="TestBean"></property>
+      <module name="TestBean">
         <engine sniffer="ejb"></engine>
         <engine sniffer="security"></engine>
         <engine sniffer="weld"></engine>

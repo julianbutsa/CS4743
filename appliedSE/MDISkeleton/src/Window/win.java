@@ -18,6 +18,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import userRemote.SessionRemote;
 import Model.Session;
 import control.InventoryController;
 
@@ -76,8 +77,8 @@ public class win extends JFrame {
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Session a = masterController.getSession();
-				if(a.getViewProduct()){
+				SessionRemote a = masterController.getSession();
+				if(a.getPermissions() == 3 || a.getPermissions() == 1){
 					openProduct();
 				}else{
 					System.out.println("Insufficient Permissions");
@@ -90,22 +91,32 @@ public class win extends JFrame {
 
 		//make a Network Menu for logging in and Registering
 		menu = new JMenu("Network");
-		menuItem = new JMenuItem("Login");
+		//menuItem = new JMenuItem("Login");
+		//menuItem.addActionListener(new ActionListener() {
+			//@Override
+			//public void actionPerformed(ActionEvent e) {
+			//	openLogin();
+			//}
+		//});
+		//menu.add(menuItem);
+		//menuItem = new JMenuItem("Register");
+		//menuItem.addActionListener(new ActionListener() {
+			//@Override
+			//public void actionPerformed(ActionEvent e) {
+			//	openRegistration();
+			//}
+	//	});
+		//menu.add(menuItem);
+		
+		menuItem = new JMenuItem("Logout");
 		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				openLogin();
+				//masterController.logout();
 			}
 		});
 		menu.add(menuItem);
-		menuItem = new JMenuItem("Register");
-		menuItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				openRegistration();
-			}
-		});
-		menu.add(menuItem);
+		
 		menuBar.add(menu);
 		
 		setJMenuBar(menuBar);
@@ -150,9 +161,11 @@ public class win extends JFrame {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 		frame.setVisible(true);		
 		
+		frame.openMDIChild(new loginPanel(frame, 0));
+		
 		//open an inventory window
-		frame.openMDIChild(new PartListPanel(frame, masterController.getInventory()));		
-		frame.openMDIChild(new InventoryPanel(frame, masterController.getItemInventory()));
+		//frame.openMDIChild(new PartListPanel(frame, masterController.getInventory()));		
+		//frame.openMDIChild(new InventoryPanel(frame, masterController.getItemInventory()));
 		//frame.openMDIChild(new ProductPanel(frame, masterController.getProducts()));
 	}
 

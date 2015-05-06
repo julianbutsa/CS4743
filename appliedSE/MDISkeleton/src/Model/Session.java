@@ -148,6 +148,14 @@ public class Session {
 	public boolean getDeleteParts(){
 		return canDeleteParts;
 	}
+
+	public UserModel getCurrentUser() {
+		return currentUser;
+	}
+
+	public void setCurrentUser(UserModel currentUser) {
+		this.currentUser = currentUser;
+	}
 	
 	
 	

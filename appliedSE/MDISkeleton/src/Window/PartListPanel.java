@@ -12,6 +12,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
+import userRemote.SessionRemote;
 import control.PartObserver;
 import DBclass.DBQuery;
 import Model.*;
@@ -118,11 +119,12 @@ public class PartListPanel extends ChildPanel implements MouseListener, ActionLi
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		SessionRemote sr = master.getController().getSession();
+		int p = sr.getPermissions();
 		switch(e.getActionCommand()){
 			case "add":
 				//call editPanel
-				Session a = master.getController().getSession();
-				if(a.getAddPart()){
+				if(p == 3 || p == 2){
 					PartDetailPanel child = new PartDetailPanel(this.master, new PartModel(), 0);
 					master.openMDIChild(child);
 				}else{
@@ -131,8 +133,7 @@ public class PartListPanel extends ChildPanel implements MouseListener, ActionLi
 				//itemPanel tempframe = new itemPanel(itemPanel.ADD_MODE, 0, myHandler);
 				break;
 			case "delete":
-				Session a2 = master.getController().getSession();
-				if(a2.getDeleteParts()){
+				if(p == 3){
 				if ( listTable.getSelectedRow() >= 0){
 					PartModel toDelete = master.getController().getPart(listTable.getSelectedRow());
 					if(master.getController().deletePart(toDelete) == -1){
@@ -144,11 +145,10 @@ public class PartListPanel extends ChildPanel implements MouseListener, ActionLi
 				}
 				break;
 			case "edit":
-				Session a3 = master.getController().getSession();
-				if(a3.getAddPart()){
+				if(p == 3 || p == 2){
 				if (listTable.getSelectedRow() >= 0 ){
-					PartModel p = master.getController().getPart(listTable.getSelectedRow());
-					master.openMDIChild(new PartDetailPanel(master,  p, 1));
+					PartModel pm = master.getController().getPart(listTable.getSelectedRow());
+					master.openMDIChild(new PartDetailPanel(master,  pm, 1));
 					//itemPanel editframe = new itemPanel(itemPanel.EDIT_MODE, listTable.getSelectedRow(), myHandler);
 
 				}

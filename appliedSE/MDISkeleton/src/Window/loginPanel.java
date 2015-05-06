@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import userRemote.SessionRemote;
 import Model.Authenticator;
 import Model.Session;
 import Model.UserModel;
@@ -82,14 +83,23 @@ public class loginPanel extends ChildPanel implements ActionListener{
 		// TODO Auto-generated method stub
 		switch(e.getActionCommand()){
 			case "login":
-				Session s;
+				SessionRemote s;
 				try{
-					s = Authenticator.login(nameField.getText(), passwordField.getText(), master.getController().myDB);
-					master.getController().setSession(s);
-					master.displayChildMessage("Logged in");
-					System.out.println();
+					s = Authenticator.login(nameField.getText(), passwordField.getText());
+					if(s != null){
+						master.getController().setSession(s);
+						master.openInventory();
+						master.openPartList();
+						int perm = s.getPermissions();
+						if(perm == 1 || perm ==3){
+							master.openProduct();
+						}
+						master.displayChildMessage("Logged in");
+					}else{
+						master.displayChildMessage("Failed to login: Not valid");
+					}
 				}catch(Exception ex){
-					master.displayChildMessage("Failed to login");
+					master.displayChildMessage("Failed to login: Error with Server");
 				}
 				break;
 			case "register":
